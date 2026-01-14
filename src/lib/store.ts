@@ -41,14 +41,7 @@ export class Store<T> {
   }
 }
 
-// Interface för app state
-export interface AppState {
-  movies: TMDBMovie[];
-  searchQuery: string;
-  isLoading: boolean;
-  error: string | null;
-  watchedMovies: Set<number>;
-}
+
 
 // Initial state
 const initialState: AppState = {
