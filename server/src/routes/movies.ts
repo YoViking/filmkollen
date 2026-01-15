@@ -1,55 +1,8 @@
 import express, { Request, Response } from 'express';
 import db from '../database.js';
+import type { Movie, CreateMovieBody, UpdateMovieBody, StatsResponse, MovieStatus } from '../types/index.js';
 
 const router = express.Router();
-
-type MovieStatus = 'watchlist' | 'watched';
-
-interface Movie {
-  id: number;
-  tmdb_id: number;
-  title: string;
-  poster_path: string | null;
-  release_date: string | null;
-  vote_average: number | null;
-  overview: string | null;
-  status: MovieStatus;
-  personal_rating: number | null;
-  review: string | null;
-  is_favorite: number;
-  date_added: string;
-  date_watched: string | null;
-}
-
-interface CreateMovieBody {
-  tmdb_id: number;
-  title: string;
-  poster_path?: string | null;
-  release_date?: string | null;
-  vote_average?: number | null;
-  overview?: string | null;
-  status: MovieStatus;
-  personal_rating?: number | null;
-  review?: string | null;
-  is_favorite?: boolean;
-  date_watched?: string | null;
-}
-
-interface UpdateMovieBody {
-  status?: MovieStatus;
-  personal_rating?: number | null;
-  review?: string | null;
-  is_favorite?: boolean;
-  date_watched?: string | null;
-}
-
-interface StatsResponse {
-  totalMovies: number;
-  watchlistCount: number;
-  watchedCount: number;
-  favoritesCount: number;
-  averageRating: number;
-}
 
 /**
  * GET /api/movies
