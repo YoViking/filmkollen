@@ -10,7 +10,13 @@ const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 // Middleware
-app.use(cors()); // Aktivera CORS för alla routes
+app.use(cors({
+  origin: '*',
+  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept']
+}));
+app.options('*', cors()); // Handle preflight requests
 app.use(express.json()); // Parsar JSON-body i inkommande requests
 
 // Routes

@@ -80,7 +80,7 @@ const saveDatabase = (): void => {
 // Initiera databasen vid import
 await initDatabase();
 
-// Wrapper-funktioner för att matcha better-sqlite3 API
+// Exportera getDatabase-funktionen
 export const getDatabase = (): Database => {
   if (!db) {
     throw new Error('Databasen är inte initierad');
