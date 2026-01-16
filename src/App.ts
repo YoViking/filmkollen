@@ -2,11 +2,11 @@
 
 
 
-import Rating from "./components/Rating";
+import RatingModal from "./components/Rating";
 
 const App = () => {
   const container = document.createElement("div");
-  container.appendChild(Rating());
+  container.appendChild(RatingModal());
   return container;
 };
 

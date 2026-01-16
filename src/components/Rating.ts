@@ -3,7 +3,7 @@
 
 
 
-const Rating = () => {
+const RatingModal = () => {
 
     const stars = `
     
@@ -52,4 +52,4 @@ const Rating = () => {
     return starsDiv
 }
 
-export default Rating
+export default RatingModal
