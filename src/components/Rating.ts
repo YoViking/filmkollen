@@ -55,12 +55,27 @@ export const modal = () => {
 
 export const showModal = () => {
 
-    const toWatchedButton = document.querySelectorAll(".movie-card__btn");
+    const watchedButton = document.querySelectorAll(".movie-card__btn");
 
-    toWatchedButton.forEach(button => {
+    watchedButton.forEach(button => {
         button.addEventListener("click", () => {
             const modal = document.querySelector(".rating-modal");
-            modal?.classList.add("show-modal")
+            modal?.classList.add("show-modal");
+
+            closeModal()
         })
+
+    })
+}
+
+
+
+export const closeModal = () => {
+
+    const closeModalBtn = document.querySelector(".rating-no-button");
+
+    closeModalBtn?.addEventListener("click", () => {
+        const modal = document.querySelector(".rating-modal");
+        modal?.classList.remove("show-modal")
     })
 }
