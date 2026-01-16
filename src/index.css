@@ -117,11 +117,14 @@
 
 .rating-modal{
     width: 100%;
-    display: none;  /* When add to watched is clicked, change this to flex  */
+    display: none;
     align-items: center;
     justify-content: center;
     position: fixed;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.6);
     inset: 0;
 }
 
+.show-modal{
+    display: flex;
+}

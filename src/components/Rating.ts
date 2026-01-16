@@ -3,10 +3,9 @@
 
 
 
-const RatingModal = () => {
+export const modal = () => {
 
     const stars = `
-    
     
     <div class="rating-modal">
         <div class="rating-container">
@@ -41,15 +40,27 @@ const RatingModal = () => {
 
         </div>
     </div>`
-    
 
-    
-    const starsDiv = document.createElement("div");
-    starsDiv.classList.add("stars-container");
 
-    starsDiv.innerHTML = stars
+    const ratingDiv = document.createElement("div");
 
-    return starsDiv
+    ratingDiv.classList.add("rating-div-container");
+    ratingDiv.innerHTML = stars;
+
+    return ratingDiv;
 }
 
-export default RatingModal
+
+
+
+export const showModal = () => {
+
+    const toWatchedButton = document.querySelectorAll(".movie-card__btn");
+
+    toWatchedButton.forEach(button => {
+        button.addEventListener("click", () => {
+            const modal = document.querySelector(".rating-modal");
+            modal?.classList.add("show-modal")
+        })
+    })
+}
