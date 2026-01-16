@@ -3,27 +3,60 @@
 
 .stars-container{
     display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: black;
+    flex-direction: column;
+
+    background-color: rgba(7, 7, 43, 0.8);
+    color: white;
 
     /* This is temporary*/
     margin: 20rem auto;
+    /* This is temporary*/
 
+    width: 40rem;
+    min-height: 15rem;
+    padding: 2rem 0;
     
-    width: 60rem;
-    height: 40rem;
 }
 
 .star{
     cursor: pointer;
 }
 
-.stars-div{
+.rating-container{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30rem;
-    height: 30rem;
+    flex-direction: column;
+    width: 100%;
 }
 
+.custom-hr{
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.rating-title-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 3rem;
+    margin-bottom: 1rem;
+}
+
+.rating-title {
+    font-size: 1.65rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+}
+
+.rating-no-button{
+    all: unset;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}

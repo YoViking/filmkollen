@@ -2,11 +2,11 @@
 
 
 
-import Rating from "./components/Rating";
+import createStars from "./components/Rating";
 
 const App = () => {
   const container = document.createElement("div");
-  container.appendChild(Rating());
+  container.appendChild(createStars());
   return container;
 };
 
