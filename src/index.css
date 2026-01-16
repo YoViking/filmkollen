@@ -2,23 +2,6 @@
 
 
 
-.stars-container{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    background: linear-gradient(180deg,rgba(40, 60, 90, 0.9),rgba(20, 35, 60, 0.9));
-    color: white;
-
-    /* This is temporary*/
-    margin: 20rem auto;
-    /* This is temporary*/
-
-    width: 34rem;
-    min-height: 15rem;
-    padding: 2rem 0;
-    border-radius: 1rem;   
-}
-
 .star{
     cursor: pointer;
 }
@@ -29,6 +12,13 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
+    background: linear-gradient(180deg,rgba(40, 60, 90, 0.9),rgba(20, 35, 60, 0.9));
+    color: white;
+    min-width: 40rem;
+    min-height: 15rem;
+    padding: 2rem 0;
+    border-radius: 1rem; 
+    max-width: 50rem;
 }
 
 .custom-hr{
@@ -59,11 +49,16 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    transition: 0.15s all ease-in-out;
+}
+
+.rating-no-button:hover{
+    color: rgba(243, 243, 243, 0.88);
 }
 
 .movie-name-year{
     margin-bottom: 3rem;
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(255, 255, 255, 0.80);
 }
 
 .stars-div{
@@ -81,7 +76,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     width: 100%;
 }
 
@@ -92,21 +87,44 @@
 
 .save-rating {
     padding: 0.8rem;
-  font-size: 18px;
-  font-weight: bold;
-  color: #ffffff;
-  background: #407cd6;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: 0.15s all ease-in-out;
-  outline: none;
-  width: 20rem;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #407cd6;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: 0.15s all ease-in-out;
+    outline: none;
+    width: 20rem;
 
 }
 
 .save-rating:hover {
     background: #276cd2;
+}
+
+.skip-rating{
+    all: unset;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.80);
+    cursor: pointer;
+    transition: 0.12s all ease-in-out;
+}
+
+.skip-rating:hover{
+    color: rgba(255, 255, 255, 0.68);
+}
+
+
+.rating-modal{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background: rgba(0,0,0,0.55);
+    inset: 0;
 }
 
