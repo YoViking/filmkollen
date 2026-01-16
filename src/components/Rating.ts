@@ -46,9 +46,13 @@ export const modal = () => {
 
     ratingDiv.classList.add("rating-div-container");
     ratingDiv.innerHTML = stars;
+    
+    showModal();
+    closeModal();
 
     return ratingDiv;
 }
+
 
 
 
@@ -70,12 +74,16 @@ export const showModal = () => {
 
 
 
-export const closeModal = () => {
+const closeModal = () => {
 
-    const closeModalBtn = document.querySelector(".rating-no-button");
+    const modal = document.querySelector(".rating-modal");
 
-    closeModalBtn?.addEventListener("click", () => {
-        const modal = document.querySelector(".rating-modal");
+    document.querySelector(".rating-no-button")?.addEventListener("click", () => {
+        modal?.classList.remove("show-modal")
+    })
+
+    document.querySelector(".skip-rating")?.addEventListener("click", () => {
         modal?.classList.remove("show-modal")
     })
 }
+
