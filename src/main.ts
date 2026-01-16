@@ -1,6 +1,9 @@
+
+
 import './index.css';
 import { getMovies } from './services/tmdbApi';
 import { createMovieCard } from './components/moviecard';
+import App from './App';
 
 // Testa att hämta filmer och visa movie cards
 const testAPI = async () => {
@@ -20,6 +23,7 @@ const testAPI = async () => {
           </div>
         </div>
       `;
+      root.appendChild(App());
     }
   } catch (error) {
     console.error('Error fetching movies:', error);

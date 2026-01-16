@@ -1,0 +1,29 @@
+
+
+
+.stars-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+
+    /* This is temporary*/
+    margin: 20rem auto;
+
+    
+    width: 60rem;
+    height: 40rem;
+}
+
+.star{
+    cursor: pointer;
+}
+
+.stars-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30rem;
+    height: 30rem;
+}
+
