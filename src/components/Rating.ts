@@ -82,6 +82,8 @@ export const modal = () => {
 
 
 
+let movieId: number
+
 export const showModal = () => {
 
     const watchedButton = document.querySelectorAll(".movie-card__btn"); 
@@ -90,9 +92,11 @@ export const showModal = () => {
 
         button.addEventListener("click", () => {
             
-            const movieCard = button.closest(".movie-card")
+            const movieCard = button.closest(".movie-card") as HTMLElement 
 
             if(!movieCard) return
+
+            movieId = Number(movieCard.dataset.movieId)
             
             const movieTitle = movieCard.querySelector(".movie-card__title");
             const movieReleaseYear = movieCard.querySelector(".movie-card__year");
@@ -101,9 +105,6 @@ export const showModal = () => {
             if(nameYearTitle) {
                 nameYearTitle.textContent = `🎬 ${movieTitle?.textContent} (${movieReleaseYear?.textContent})`
             }
-
-            console.log(movieReleaseYear)
-            console.log(movieTitle)
 
 
             const modal = document.querySelector(".rating-modal");
@@ -116,6 +117,8 @@ export const showModal = () => {
 
     })
 }
+
+
 
 
 
@@ -138,8 +141,9 @@ const closeModal = () => {
 
 
 
-let rating = 0;
 
+
+let rating = 0;
 
 const starRating = () => {
 
@@ -171,6 +175,6 @@ const starRating = () => {
 const saveRating = () => {
 
     document.querySelector(".save-rating")?.addEventListener("click", () => {
-        // Add logic for saving, right now the selected rating works when saving but the rating isnt being svaed anywhere
+        
     })
 }
