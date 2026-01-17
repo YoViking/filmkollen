@@ -60,13 +60,16 @@
 }
 
 .stars-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 2.5rem;
     color: #fffffff6;
     transition: 0.15s all ease-in-out;
 }
 
 .stars-div:hover{
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .save-skip-buttons{
@@ -127,4 +130,16 @@
 
 .show-modal{
     display: flex;
+}
+
+input[type="radio"] {
+  appearance: none;
+}
+
+.fa-star{
+    font-size: 2.5rem;
+}
+
+.fa-solid{
+    color: #f5c518;
 }

@@ -24,19 +24,43 @@ export const modal = () => {
             🎬 Movie Name (Release Year)
             </span>
 
+
             <div class="stars-div">
-                <span class="star"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="M333.33-259 480-347l146.67 89-39-166.67 129-112-170-15L480-709l-66.67 156.33-170 15 129 112.34-39 166.33ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-353.33Z"/></svg></span>
-                <span class="star"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="M333.33-259 480-347l146.67 89-39-166.67 129-112-170-15L480-709l-66.67 156.33-170 15 129 112.34-39 166.33ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-353.33Z"/></svg></span>
-                <span class="star"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="M333.33-259 480-347l146.67 89-39-166.67 129-112-170-15L480-709l-66.67 156.33-170 15 129 112.34-39 166.33ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-353.33Z"/></svg></span>
-                <span class="star"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="M333.33-259 480-347l146.67 89-39-166.67 129-112-170-15L480-709l-66.67 156.33-170 15 129 112.34-39 166.33ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-353.33Z"/></svg></span>
-                <span class="star"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="M333.33-259 480-347l146.67 89-39-166.67 129-112-170-15L480-709l-66.67 156.33-170 15 129 112.34-39 166.33ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-353.33Z"/></svg></span>
+            
+                <label class="star">
+                    <input type="radio" name="rating" value="1">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="2">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="3">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="4">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="5">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+            
             </div>
+
 
             <div class="save-skip-buttons">
                 <button class="save-rating">Save Rating</button>
                 <span class="custom-button-hr"></span>
                 <button class="skip-rating">Skip for now</button>
             </div>
+            
 
         </div>
     </div>`
@@ -46,9 +70,9 @@ export const modal = () => {
 
     ratingDiv.classList.add("rating-div-container");
     ratingDiv.innerHTML = stars;
-    
+
     showModal();
-    closeModal();
+
 
     return ratingDiv;
 }
@@ -67,6 +91,7 @@ export const showModal = () => {
             modal?.classList.add("show-modal");
 
             closeModal()
+            starRating()
         })
 
     })
@@ -85,5 +110,39 @@ const closeModal = () => {
     document.querySelector(".skip-rating")?.addEventListener("click", () => {
         modal?.classList.remove("show-modal")
     })
+
+    document.querySelector(".save-rating")?.addEventListener("click", () => {
+        modal?.classList.remove("show-modal")
+    })
+}
+
+
+
+
+
+const starRating = () => {
+
+
+    const starIcon = document.querySelectorAll<HTMLElement>(".fa-star");
+
+
+    starIcon.forEach((star, index) => {
+        star.addEventListener("click", () => {
+            starIcon.forEach((s, i) => {
+
+                if ( i <= index) {
+                    s.classList.remove("fa-regular");
+                    s.classList.add("fa-solid");
+                }
+
+                else {
+                    s.classList.remove("fa-solid");
+                    s.classList.add("fa-regular");
+                }
+            })
+        })
+    })
+
+
 }
 
