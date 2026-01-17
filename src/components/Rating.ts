@@ -1,6 +1,6 @@
 
 
-
+import { saveRating } from "../services/movieApi";
 
 
 export const modal = () => {
@@ -110,9 +110,10 @@ export const showModal = () => {
             const modal = document.querySelector(".rating-modal");
             modal?.classList.add("show-modal");
 
-            closeModal()
             starRating()
-            saveRating()
+            collectRating()
+            closeModal()
+            
         })
 
     })
@@ -172,9 +173,10 @@ const starRating = () => {
 
 
 
-const saveRating = () => {
+
+const collectRating = () => {
 
     document.querySelector(".save-rating")?.addEventListener("click", () => {
-        
+        saveRating(movieId, rating)
     })
 }
