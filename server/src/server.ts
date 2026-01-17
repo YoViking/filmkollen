@@ -15,6 +15,8 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 app.use(cors()); // Aktivera CORS för alla routes
 app.use(express.json()); // Parsar JSON-body i inkommande requests
 
+
+
 // Routes
 app.use('/api/movies', moviesRouter);
 
@@ -46,6 +48,28 @@ app.get('/', (req: Request, res: Response) => {
     }
   });
 });
+
+
+app.post('/api/ratings', (req: Request, res: Response) => {
+  const { movieId, rating } = req.body;
+
+  // Very simple validation
+  if (!movieId || !rating) {
+    return res.status(400).json({
+      message: 'movieId and rating are required'
+    });
+  }
+
+  console.log('Rating received:', movieId, rating);
+
+  // For now, just confirm success
+  res.status(201).json({
+    message: 'Rating saved',
+    movieId,
+    rating
+  });
+});
+
 
 // 404-hanterare (okänd route)
 app.use((req: Request, res: Response) => {

@@ -1,7 +1,6 @@
 
 
 
-
 export const saveRating = async (movieId: number, rating: number) => {
 
 
