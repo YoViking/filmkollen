@@ -172,11 +172,13 @@ const starRating = () => {
 
 
 
-
-
 const collectRating = () => {
 
-    document.querySelector(".save-rating")?.addEventListener("click", () => {
+    const saveRatingButton = document.querySelector(".save-rating") as HTMLButtonElement
+
+    if (!saveRatingButton) return;
+
+    saveRatingButton.onclick = () => {
         saveRating(movieId, rating)
-    })
+    }
 }

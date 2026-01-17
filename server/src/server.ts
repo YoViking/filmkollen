@@ -1,5 +1,6 @@
 
 
+
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -69,6 +70,7 @@ app.post('/api/ratings', (req: Request, res: Response) => {
     rating
   });
 });
+
 
 
 // 404-hanterare (okänd route)
