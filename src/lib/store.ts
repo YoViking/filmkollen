@@ -1,3 +1,5 @@
+
+
 // Hanterar global state
 import type { TMDBMovie } from "../types/index";
 

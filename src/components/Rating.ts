@@ -5,6 +5,7 @@
 
 export const modal = () => {
 
+    
     const stars = `
     
     <div class="rating-modal">
@@ -21,7 +22,7 @@ export const modal = () => {
             <div class="custom-hr"></div>
 
             <span class="movie-name-year">
-            🎬 Movie Name (Release Year)
+             
             </span>
 
 
@@ -83,15 +84,34 @@ export const modal = () => {
 
 export const showModal = () => {
 
-    const watchedButton = document.querySelectorAll(".movie-card__btn");
+    const watchedButton = document.querySelectorAll(".movie-card__btn"); 
 
     watchedButton.forEach(button => {
+
         button.addEventListener("click", () => {
+            
+            const movieCard = button.closest(".movie-card")
+
+            if(!movieCard) return
+            
+            const movieTitle = movieCard.querySelector(".movie-card__title");
+            const movieReleaseYear = movieCard.querySelector(".movie-card__year");
+            const nameYearTitle = document.querySelector(".movie-name-year");
+            
+            if(nameYearTitle) {
+                nameYearTitle.textContent = `🎬 ${movieTitle?.textContent} (${movieReleaseYear?.textContent})`
+            }
+
+            console.log(movieReleaseYear)
+            console.log(movieTitle)
+
+
             const modal = document.querySelector(".rating-modal");
             modal?.classList.add("show-modal");
 
             closeModal()
             starRating()
+            saveRating()
         })
 
     })
@@ -118,31 +138,39 @@ const closeModal = () => {
 
 
 
+let rating = 0;
 
 
 const starRating = () => {
 
-
     const starIcon = document.querySelectorAll<HTMLElement>(".fa-star");
 
-
-    starIcon.forEach((star, index) => {
+    starIcon.forEach((star, index1) => {
         star.addEventListener("click", () => {
-            starIcon.forEach((s, i) => {
+            starIcon.forEach((star, index2) => {
 
-                if ( i <= index) {
-                    s.classList.remove("fa-regular");
-                    s.classList.add("fa-solid");
+                rating = index1 + 1
+
+                if (index1 >= index2) {
+                    star.classList.remove("fa-regular");
+                    star.classList.add("fa-solid");
                 }
 
                 else {
-                    s.classList.remove("fa-solid");
-                    s.classList.add("fa-regular");
+                    star.classList.remove("fa-solid");
+                    star.classList.add("fa-regular");
                 }
             })
         })
     })
-
-
 }
 
+
+
+
+const saveRating = () => {
+
+    document.querySelector(".save-rating")?.addEventListener("click", () => {
+        // Add logic for saving, right now the selected rating works when saving but the rating isnt being svaed anywhere
+    })
+}
