@@ -3,7 +3,7 @@
 
 export async function saveRating(movieId: number, rating: number) {
   
-    const res = await fetch("http://localhost:3001/api/ratings", 
+    const res = await fetch("http://localhost:3000/api/ratings", 
         {
             
             method: "POST",
