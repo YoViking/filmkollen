@@ -6,6 +6,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import moviesRouter from './routes/movies.js';
 
+import ratingsRouter from './routes/ratings.js';
+
+
 // Läs in miljövariabler från .env
 dotenv.config();
 
@@ -91,6 +94,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     message: err.message
   });
 });
+
+
+app.use("/api/ratings", ratingsRouter);
+
+
 
 // Starta servern
 app.listen(PORT, () => {

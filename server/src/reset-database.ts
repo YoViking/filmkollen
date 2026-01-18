@@ -55,6 +55,7 @@ const createMoviesTable = `
   )
 `;
 
+
 db.run(createMoviesTable);
 
 // Spara databasen
@@ -62,9 +63,21 @@ const data = db.export();
 const buffer = Buffer.from(data);
 writeFileSync(dbPath, buffer);
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS ratings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movie_id INTEGER NOT NULL,
+    rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    created_at TEXT NOT NULL
+  );
+`);
+
 console.log('✓ Skapade nya databastabeller');
 console.log('');
 console.log('✅ Databasåterställning klar!');
 console.log('   Du kan nu starta servern med: npm run dev');
 
 db.close();
+
+
+
