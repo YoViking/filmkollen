@@ -10,7 +10,24 @@ const dbPath = join(__dirname, '../database.db');
 
 let db: Database | null = null;
 
-// Initiera databasen
+/**
+ * Spara databasen till fil
+ * Eftersom sql.js körs i RAM måste vi skriva ner den till disk manuellt
+ */
+export const saveDatabase = (): void => {
+  if (!db) return;
+  try {
+    const data = db.export();
+    const buffer = Buffer.from(data);
+    writeFileSync(dbPath, buffer);
+  } catch (error) {
+    console.error('❌ Fel vid sparning av databas:', error);
+  }
+};
+
+/**
+ * Initiera databasen
+ */
 const initDatabase = async (): Promise<void> => {
   const require = createRequire(import.meta.url);
   const sqlJsPath = require.resolve('sql.js');
@@ -22,7 +39,6 @@ const initDatabase = async (): Promise<void> => {
     }
   });
 
-  // Försök ladda befintlig databas, annars skapa ny
   if (existsSync(dbPath)) {
     try {
       const buffer = readFileSync(dbPath);
@@ -37,10 +53,8 @@ const initDatabase = async (): Promise<void> => {
     console.log('✓ Skapade ny databas');
   }
 
-  // Slå på foreign keys
   db.run('PRAGMA foreign_keys = ON');
 
-  // Skapa tabeller
   const createMoviesTable = `
     CREATE TABLE IF NOT EXISTS movies (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,33 +77,24 @@ const initDatabase = async (): Promise<void> => {
   db.run(createMoviesTable);
   saveDatabase();
   console.log('✓ Databastabeller initierade');
+
+  // Valfritt: Auto-save var 60:e sekund som säkerhet
+  setInterval(saveDatabase, 60000);
 };
 
-// Spara databasen till fil
-const saveDatabase = (): void => {
-  if (!db) return;
-  try {
-    const data = db.export();
-    const buffer = Buffer.from(data);
-    writeFileSync(dbPath, buffer);
-  } catch (error) {
-    console.error('Fel vid sparning av databas:', error);
-  }
-};
-
-// Initiera databasen vid import
+// Starta initieringen direkt
 await initDatabase();
 
-// Wrapper-funktioner för att matcha better-sqlite3 API
+/**
+ * Wrapper-funktion för att komma åt databas-instansen
+ * Det är denna som anropas via db() i din router
+ */
 export const getDatabase = (): Database => {
   if (!db) {
-    throw new Error('Databasen är inte initierad');
+    throw new Error('Databasen är inte initierad än!');
   }
   return db;
 };
 
-// Exportera save-funktionen så den kan anropas från routes
-export { saveDatabase };
-
-// Exportera db direkt för bakåtkompatibilitet (men använd getDatabase() istället)
+// Default export så att "import db from './database.js'" fungerar
 export default getDatabase;
