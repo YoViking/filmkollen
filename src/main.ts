@@ -3,6 +3,7 @@ import { getMovies } from './services/tmdbApi';
 import { createMovieCard } from './components/moviecard';
 import { initWatchedView } from './views/watched/watched';
 import * as movieApi from './services/movieApi';
+import { appStore } from './lib/store';
 import type { TMDBMovie, CreateMovieBody } from './types/index';
 
 let currentView: 'browse' | 'watched' = 'browse';
@@ -38,7 +39,19 @@ const attachBrowseListeners = async () => {
           date_watched: new Date().toISOString().split("T")[0],
         };
 
-        await movieApi.addMovie(movieData);
+        const created = await movieApi.addMovie(movieData);
+
+        // Uppdatera globalt state
+        appStore.setState((prev) => {
+          const nextWatched = new Set(prev.watchedMovies);
+          nextWatched.add(Number(tmdbId));
+          const nextMovies = prev.movies.map((m) =>
+            m.id === Number(tmdbId) ? { ...m, isWatched: true } : m
+          );
+          return { watchedMovies: nextWatched, movies: nextMovies };
+        });
+
+        // Uppdatera UI-knappen
         (button as HTMLButtonElement).textContent = "✓ Watched";
         (button as HTMLButtonElement).disabled = true;
       } catch (error) {
@@ -58,13 +71,22 @@ const renderBrowseView = async () => {
     browseMovies = await getMovies();
     console.log('Movies fetched:', browseMovies);
     
+    // Markera vilka filmer som redan är watched baserat på globalt state
+    const watchedIds = appStore.getState().watchedMovies;
+    const mapped = browseMovies.map((m) => ({
+      ...m,
+      isWatched: watchedIds.has(m.id),
+    }));
+    // Uppdatera globalt state med nuvarande lista
+    appStore.setState({ movies: mapped });
+
     const root = document.getElementById('root');
-    if (root && browseMovies.length > 0) {
+    if (root && mapped.length > 0) {
       root.innerHTML = `
         <div style="padding: 20px;">
           <h1>Popular Movies</h1>
           <div id="browse-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-            ${browseMovies.map(movie => createMovieCard(movie)).join('')}
+            ${mapped.map(movie => createMovieCard(movie)).join('')}
           </div>
         </div>
       `;

@@ -1,16 +1,16 @@
 # Filmkollen AI Coding Instructions
 
 ## Project Overview
-**Filmkollen** is a React + TypeScript movie watchlist web application with a Node.js/Express backend. Users browse movies from TMDB API, mark them as watched, and manage personal ratings and reviews via a SQLite database.
+**Filmkollen** is a vanilla TypeScript + Vite movie watchlist web application with a Node.js/Express backend. Users browse movies from TMDB API, mark them as watched, and manage personal ratings and reviews via a SQLite database.
 
 ### Architecture
-- **Frontend** (Vite + React 19): Browse movies, mark watched, view watchlist
+- **Frontend** (Vite + Vanilla TypeScript): Browse movies via HTML/CSS/TS, mark watched, view watchlist
 - **Backend** (Express + SQLite): RESTful API persisting user movie data
 - **External API**: TMDB (The Movie Database) for movie data
 - **Data Flow**: TMDB → Frontend → Local Backend API → SQLite
 
 ## Key Tech Stack
-- **Frontend**: React 19, TypeScript 5.9, Vite, ESLint
+- **Frontend**: Vanilla TypeScript 5.9, Vite, ESLint (no React/frameworks)
 - **Backend**: Express, SQLite (via sql.js), TypeScript
 - **Package Managers**: npm (both root and server/)
 
@@ -52,10 +52,11 @@ npm run reset-db # Reinitialize SQLite database from schema
 - Always type API responses and component props with these interfaces
 
 ### Component Pattern
-- Web Components style: [src/components/moviecard.ts](src/components/moviecard.ts)
-- HTML files in views/ directories: [src/views/watched/watched.html](src/views/watched/watched.html)
-- Event listeners attached in main.ts with `attachBrowseListeners()` pattern
-- DOM queries use IDs like `#browse-container` to find elements
+- **Vanilla TS Web Components**: [src/components/moviecard.ts](src/components/moviecard.ts) - custom HTML elements
+- **HTML Templates**: Files in `views/` directories like [src/views/watched/watched.html](src/views/watched/watched.html)
+- **Event Listeners**: Attached in [main.ts](src/main.ts) with `attachBrowseListeners()` pattern
+- **DOM Manipulation**: Direct DOM queries using IDs like `#browse-container`, no framework state binding
+- **No JSX/TSX**: Pure TypeScript files (.ts) that manipulate the DOM
 
 ### Backend Database
 - SQLite with sql.js (in-memory with file persistence)
@@ -110,10 +111,12 @@ server/src/
 
 ## ESLint Configuration
 - Config: [eslint.config.js](eslint.config.js)
-- Includes React hooks rules
-- Type-aware linting not yet enabled (see README-gammal.md for config)
+- Includes React hooks rules (legacy from template, not used in vanilla TS code)
+- Type-aware linting not yet enabled
 
 ## Team Notes
-- Vanilla TS team project at Chas Academy
-- Merge conflict in README-gammal.md (React template template vs project name)
+- Vanilla TypeScript team project at Chas Academy
+- No React framework—pure TS + DOM manipulation
+- Merge conflict in README-gammal.md (React template vs vanilla project)
 - No authentication/user isolation yet—single shared database
+- Recent fix: Converted all sql.js calls from broken better-sqlite3 API pattern to correct sql.js API
