@@ -1,5 +1,6 @@
 import { createMovieCard } from "../../components/moviecard";
 import * as movieApi from "../../services/movieApi";
+import { appStore } from "../../lib/store";
 import type { TMDBMovie, CreateMovieBody } from "../../types/index";
 
 /**
@@ -18,6 +19,10 @@ export const renderWatchedMovies = async (): Promise<void> => {
     // Hämta watched-filmer från API
     const watchedMovies = await movieApi.getAllMovies("watched");
     console.log("Watched movies fetched:", watchedMovies);
+
+    // Uppdatera globalt state med aktuell lista av watched (tmdb_id)
+    const watchedIds = new Set(watchedMovies.map((m) => m.tmdb_id));
+    appStore.setState({ watchedMovies: watchedIds });
 
     if (watchedMovies.length === 0) {
       watchedContainer.innerHTML = `
@@ -78,7 +83,17 @@ export const addWatchedMovie = async (movie: TMDBMovie): Promise<void> => {
       date_watched: new Date().toISOString().split("T")[0], // Format: YYYY-MM-DD
     };
 
-    await movieApi.addMovie(movieData);
+    const created = await movieApi.addMovie(movieData);
+
+    // Uppdatera globalt state
+    appStore.setState((prev) => {
+      const nextWatched = new Set(prev.watchedMovies);
+      nextWatched.add(movie.id);
+      const nextMovies = prev.movies.map((m) =>
+        m.id === movie.id ? { ...m, isWatched: true } : m
+      );
+      return { watchedMovies: nextWatched, movies: nextMovies };
+    });
     await renderWatchedMovies();
   } catch (error) {
     console.error("Error adding watched movie:", error);
@@ -89,9 +104,26 @@ export const addWatchedMovie = async (movie: TMDBMovie): Promise<void> => {
 /**
  * Tar bort en film från watched i databasen
  */
-export const removeWatchedMovie = async (movieId: number): Promise<void> => {
+export const removeWatchedMovie = async (tmdbId: number): Promise<void> => {
   try {
-    await movieApi.deleteMovie(movieId);
+    // Hitta backend-id för filmen baserat på tmdbId
+    const watched = await movieApi.getAllMovies("watched");
+    const match = watched.find((m) => m.tmdb_id === tmdbId);
+    if (!match) {
+      console.warn("Movie not found in watched list for deletion", { tmdbId });
+    } else {
+      await movieApi.deleteMovie(match.id);
+    }
+
+    // Uppdatera globalt state
+    appStore.setState((prev) => {
+      const nextWatched = new Set(prev.watchedMovies);
+      nextWatched.delete(tmdbId);
+      const nextMovies = prev.movies.map((m) =>
+        m.id === tmdbId ? { ...m, isWatched: false } : m
+      );
+      return { watchedMovies: nextWatched, movies: nextMovies };
+    });
     await renderWatchedMovies();
   } catch (error) {
     console.error("Error removing watched movie:", error);

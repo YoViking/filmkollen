@@ -4,6 +4,7 @@ import { createMovieCard } from './components/moviecard';
 import { initWatchedView } from './views/watched/watched';
 import { initWatchlistView, addWatchlistMovie } from './views/watchlist/watchlist';
 import * as movieApi from './services/movieApi';
+import { appStore } from './lib/store';
 import type { TMDBMovie, CreateMovieBody } from './types/index';
 
 let currentView: 'browse' | 'watched' | 'watchlist' = 'browse';
@@ -37,6 +38,7 @@ const attachBrowseListeners = () => {
           status: "watched",
           date_watched: new Date().toISOString().split("T")[0],
         };
+<<<<<<< HEAD
         try {
           await movieApi.addMovie(movieData);
           (button as HTMLButtonElement).textContent = "✓ Watched";
@@ -53,6 +55,27 @@ const attachBrowseListeners = () => {
         } catch (err) {
           console.error(err);
         }
+=======
+
+        const created = await movieApi.addMovie(movieData);
+
+        // Uppdatera globalt state
+        appStore.setState((prev) => {
+          const nextWatched = new Set(prev.watchedMovies);
+          nextWatched.add(Number(tmdbId));
+          const nextMovies = prev.movies.map((m) =>
+            m.id === Number(tmdbId) ? { ...m, isWatched: true } : m
+          );
+          return { watchedMovies: nextWatched, movies: nextMovies };
+        });
+
+        // Uppdatera UI-knappen
+        (button as HTMLButtonElement).textContent = "✓ Watched";
+        (button as HTMLButtonElement).disabled = true;
+      } catch (error) {
+        console.error("Error adding watched movie:", error);
+        alert("Failed to add movie to watched list");
+>>>>>>> 0f1d296c1dc5e894722b3f8958819475213a50e7
       }
     });
   });
@@ -64,6 +87,7 @@ const attachBrowseListeners = () => {
 const renderBrowseView = async () => {
   try {
     browseMovies = await getMovies();
+<<<<<<< HEAD
     const root = document.getElementById('root');
     if (!root) return;
 
@@ -72,6 +96,27 @@ const renderBrowseView = async () => {
         <h1>Popular Movies</h1>
         <div id="browse-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
           ${browseMovies.map(movie => createMovieCard(movie)).join('')}
+=======
+    console.log('Movies fetched:', browseMovies);
+    
+    // Markera vilka filmer som redan är watched baserat på globalt state
+    const watchedIds = appStore.getState().watchedMovies;
+    const mapped = browseMovies.map((m) => ({
+      ...m,
+      isWatched: watchedIds.has(m.id),
+    }));
+    // Uppdatera globalt state med nuvarande lista
+    appStore.setState({ movies: mapped });
+
+    const root = document.getElementById('root');
+    if (root && mapped.length > 0) {
+      root.innerHTML = `
+        <div style="padding: 20px;">
+          <h1>Popular Movies</h1>
+          <div id="browse-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            ${mapped.map(movie => createMovieCard(movie)).join('')}
+          </div>
+>>>>>>> 0f1d296c1dc5e894722b3f8958819475213a50e7
         </div>
       </div>
     `;
