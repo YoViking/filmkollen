@@ -2,31 +2,31 @@ import './index.css';
 import { getMovies } from './services/tmdbApi';
 import { createMovieCard } from './components/moviecard';
 import { initWatchedView } from './views/watched/watched';
+import { initWatchlistView, addWatchlistMovie } from './views/watchlist/watchlist';
 import * as movieApi from './services/movieApi';
 import type { TMDBMovie, CreateMovieBody } from './types/index';
 
-let currentView: 'browse' | 'watched' = 'browse';
+let currentView: 'browse' | 'watched' | 'watchlist' = 'browse';
 let browseMovies: TMDBMovie[] = [];
 
 /**
- * Sätter upp event-lyssnare för movie cards i browse-vyn
+ * Attach buttons on movie cards in Browse view
  */
-const attachBrowseListeners = async () => {
-  const buttons = document.querySelectorAll(
-    "#browse-container .movie-card__btn"
-  );
+const attachBrowseListeners = () => {
+  const buttons = document.querySelectorAll("#browse-container .movie-card__btn");
 
   buttons.forEach((button) => {
     button.addEventListener("click", async (e) => {
       e.preventDefault();
-      const tmdbId = (button as HTMLButtonElement).getAttribute("data-movie-id");
+      const tmdbId = (button as HTMLButtonElement).dataset.movieId;
       if (!tmdbId) return;
 
-      try {
-        const movie = browseMovies.find((m) => m.id === Number(tmdbId));
-        if (!movie) return;
+      const movie = browseMovies.find((m) => m.id === Number(tmdbId));
+      if (!movie) return;
 
-        // Skapa watched-filmen
+      // Decide which button
+      if ((button as HTMLButtonElement).classList.contains("movie-card__btn--watched")) {
+        // Add to watched
         const movieData: CreateMovieBody = {
           tmdb_id: movie.id,
           title: movie.title,
@@ -37,70 +37,91 @@ const attachBrowseListeners = async () => {
           status: "watched",
           date_watched: new Date().toISOString().split("T")[0],
         };
-
-        await movieApi.addMovie(movieData);
-        (button as HTMLButtonElement).textContent = "✓ Watched";
-        (button as HTMLButtonElement).disabled = true;
-      } catch (error) {
-        console.error("Error adding watched movie:", error);
-        alert("Failed to add movie to watched list");
+        try {
+          await movieApi.addMovie(movieData);
+          (button as HTMLButtonElement).textContent = "✓ Watched";
+          (button as HTMLButtonElement).disabled = true;
+        } catch (err) {
+          console.error(err);
+        }
+      } else if ((button as HTMLButtonElement).classList.contains("movie-card__btn--watchlist")) {
+        // Add to watchlist
+        try {
+          await addWatchlistMovie(movie);
+          (button as HTMLButtonElement).textContent = "✓ Watchlist";
+          (button as HTMLButtonElement).disabled = true;
+        } catch (err) {
+          console.error(err);
+        }
       }
     });
   });
 };
 
 /**
- * Renderar browse-vyn (populära filmer)
+ * Render Browse view
  */
 const renderBrowseView = async () => {
   try {
-    console.log('Fetching movies...');
     browseMovies = await getMovies();
-    console.log('Movies fetched:', browseMovies);
-    
     const root = document.getElementById('root');
-    if (root && browseMovies.length > 0) {
-      root.innerHTML = `
-        <div style="padding: 20px;">
-          <h1>Popular Movies</h1>
-          <div id="browse-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-            ${browseMovies.map(movie => createMovieCard(movie)).join('')}
-          </div>
+    if (!root) return;
+
+    root.innerHTML = `
+      <div style="padding:20px;">
+        <h1>Popular Movies</h1>
+        <div id="browse-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
+          ${browseMovies.map(movie => createMovieCard(movie)).join('')}
         </div>
-      `;
-      await attachBrowseListeners();
-    }
-  } catch (error) {
-    console.error('Error fetching movies:', error);
+      </div>
+    `;
+    attachBrowseListeners();
+  } catch (err) {
+    console.error(err);
     const root = document.getElementById('root');
-    if (root) {
-      root.innerHTML = `<h1>Error: ${error}</h1>`;
-    }
+    if (root) root.innerHTML = `<h1>Error loading movies</h1>`;
   }
 };
 
 /**
- * Rendererar watched-vyn
+ * Render Watched view
  */
 const renderWatchedView = async () => {
   const root = document.getElementById('root');
-  if (root) {
-    root.innerHTML = `
-      <div style="padding: 20px;">
-        <h1>Watched Movies</h1>
-        <div id="watched-container"></div>
-      </div>
-    `;
-    await initWatchedView();
-  }
+  if (!root) return;
+
+  root.innerHTML = `
+    <div style="padding:20px;">
+      <h1>Watched Movies</h1>
+      <div id="watched-container"></div>
+    </div>
+  `;
+  await initWatchedView();
 };
 
 /**
- * Hantera navigation mellan vyerna
+ * Render Watchlist view
+ */
+const renderWatchlistView = async () => {
+  const root = document.getElementById('root');
+  if (!root) return;
+
+  root.innerHTML = `
+    <div style="padding:20px;">
+      <h1>Watchlist</h1>
+      <div id="watchlist-container"></div>
+    </div>
+  `;
+  await initWatchlistView();
+};
+
+/**
+ * Navigation setup
  */
 const setupNavigation = () => {
   const browseBtn = document.getElementById('nav-browse');
   const watchedBtn = document.getElementById('nav-watched');
+  const watchlistBtn = document.getElementById('nav-watchlist');
 
   browseBtn?.addEventListener('click', async () => {
     currentView = 'browse';
@@ -114,24 +135,28 @@ const setupNavigation = () => {
     updateNavButtonStyles();
   });
 
+  watchlistBtn?.addEventListener('click', async () => {
+    currentView = 'watchlist';
+    await renderWatchlistView();
+    updateNavButtonStyles();
+  });
+
   updateNavButtonStyles();
 };
 
 /**
- * Uppdatera nav-knapparnass stilar baserat på nuvarande vy
+ * Update nav button styles
  */
 const updateNavButtonStyles = () => {
   const browseBtn = document.getElementById('nav-browse') as HTMLButtonElement;
   const watchedBtn = document.getElementById('nav-watched') as HTMLButtonElement;
+  const watchlistBtn = document.getElementById('nav-watchlist') as HTMLButtonElement;
 
-  if (browseBtn) {
-    browseBtn.style.fontWeight = currentView === 'browse' ? 'bold' : 'normal';
-  }
-  if (watchedBtn) {
-    watchedBtn.style.fontWeight = currentView === 'watched' ? 'bold' : 'normal';
-  }
+  browseBtn.style.fontWeight = currentView === 'browse' ? 'bold' : 'normal';
+  watchedBtn.style.fontWeight = currentView === 'watched' ? 'bold' : 'normal';
+  watchlistBtn.style.fontWeight = currentView === 'watchlist' ? 'bold' : 'normal';
 };
 
-// Initialisera appen
+// Init app
 setupNavigation();
 renderBrowseView();
