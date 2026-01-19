@@ -22,13 +22,9 @@ export const createMovieCard = (movie: TMDBMovie): string => {
           <span class="movie-card__rating">⭐ ${movie.vote_average.toFixed(1)}</span>
         </div>
         <p class="movie-card__overview">${movie.overview || "No description available."}</p>
-<<<<<<< HEAD
 
         <!-- Watched button -->
         <button class="movie-card__btn movie-card__btn--watched" data-movie-id="${movie.id}">
-=======
-        <button class="movie-card__btn" data-movie-id="${movie.id}" ${movie.isWatched ? "disabled" : ""}>
->>>>>>> 0f1d296c1dc5e894722b3f8958819475213a50e7
           ${movie.isWatched ? "✓ Watched" : "+ Add to Watched"}
         </button>
 
