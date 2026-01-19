@@ -1,7 +1,7 @@
 
 
 // Hanterar global state
-import type { TMDBMovie } from "../types/index";
+import type { TMDBMovie, AppState } from "../types/index";
 
 type Listener = () => void;
 
@@ -52,6 +52,7 @@ const initialState: AppState = {
   isLoading: false,
   error: null,
   watchedMovies: new Set(),
+  watchlistMovies: new Set(),
 };
 
 // Global store instans
