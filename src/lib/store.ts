@@ -50,6 +50,7 @@ const initialState: AppState = {
   isLoading: false,
   error: null,
   watchedMovies: new Set(),
+  watchlistMovies: new Set(),
 };
 
 // Global store instans

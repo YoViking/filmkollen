@@ -1,0 +1,295 @@
+/* Movie Card Styles - Based on Figma Design */
+
+.movie-card {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  transition: box-shadow 0.2s;
+}
+
+/* Hover: keep card still, only soften shadow */
+.movie-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Watchlist button - overlay on top left */
+.movie-card__watchlist-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  background: rgba(107, 114, 128, 0.85);
+  border: none;
+  border-radius: 4px 4px 0 0;
+  width: 44px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+  padding-top: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.movie-card__watchlist-btn .bookmark-icon {
+  font-size: 24px;
+  font-weight: 400;
+  color: white;
+  line-height: 1;
+}
+
+/* Yellow state when in watchlist */
+.movie-card__watchlist-btn.is-watchlisted {
+  background: rgba(234, 179, 8, 0.95);
+}
+
+.movie-card__watchlist-btn.is-watchlisted .bookmark-icon {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.movie-card__watchlist-btn:hover {
+  background: rgba(75, 85, 99, 0.95);
+  transform: scale(1.05);
+}
+
+.movie-card__watchlist-btn.is-watchlisted:hover {
+  background: rgba(202, 138, 4, 1);
+}
+
+.movie-card__watchlist-btn:active {
+  transform: scale(0.98);
+}
+
+/* Poster */
+.movie-card__poster {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.movie-card__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.2s ease;
+}
+
+.movie-card:hover .movie-card__poster img {
+  filter: brightness(0.85);
+}
+
+/* Rating section */
+.movie-card__rating-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 12px;
+  padding: 0 8px;
+}
+
+.movie-card__tmdb-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.movie-card__rate-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #60a5fa;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.movie-card__rate-btn:hover {
+  background: #eff6ff;
+}
+
+/* Title */
+.movie-card__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  text-align: center;
+  margin: 8px 0 4px;
+  line-height: 1.4;
+}
+
+/* Year label */
+.movie-card__year {
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* Details button */
+.movie-card__details-btn {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 24px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #3b82f6;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.movie-card__details-btn:hover {
+  background: #e5e7eb;
+}
+
+/* Grid layout for browse view */
+#browse-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 20px;
+}
+
+/* Movie modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+.movie-modal {
+  background: #3a3534;
+  color: #f3f4f6;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 860px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+.movie-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.movie-modal__body {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 20px;
+}
+
+.movie-modal__poster img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #d6d3d1;
+}
+
+.movie-modal__title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.movie-modal__year {
+  margin: 4px 0 12px;
+  color: #d1d5db;
+  font-weight: 600;
+}
+
+.movie-modal__rating {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.movie-modal__tmdb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #facc15;
+}
+
+.movie-modal__rate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid #60a5fa;
+  color: #93c5fd;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.movie-modal__overview {
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+
+.movie-modal__watchlist-btn {
+  width: 100%;
+  padding: 14px;
+  background: #6b7280;
+  color: #e5e7eb;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.movie-modal__watchlist-btn:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+.movie-modal__watchlist-btn.is-watchlisted {
+  background: #eab308;
+  color: #1f2937;
+}
+
+.movie-modal__watchlist-btn.is-watchlisted:hover {
+  background: #ca8a04;
+}

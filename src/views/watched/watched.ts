@@ -49,11 +49,7 @@ export const renderWatchedMovies = async (): Promise<void> => {
       })
       .join("");
 
-    watchedContainer.innerHTML = `
-      <div class="movies-grid">
-        ${moviesHTML}
-      </div>
-    `;
+    watchedContainer.innerHTML = moviesHTML;
 
     // Re-attach event listeners
     attachWatchedListeners();

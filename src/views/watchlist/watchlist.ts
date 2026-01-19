@@ -1,5 +1,6 @@
 import { createMovieCard } from "../../components/moviecard";
 import * as movieApi from "../../services/movieApi";
+import { appStore } from "../../lib/store";
 import type { TMDBMovie, CreateMovieBody } from "../../types/index";
 
 /**
@@ -15,6 +16,10 @@ export const renderWatchlistMovies = async (): Promise<void> => {
 
   try {
     const watchlistMovies = await movieApi.getAllMovies("watchlist");
+
+    // Uppdatera globalt state med watchlist tmdb_ids
+    const watchlistIds = new Set(watchlistMovies.map((m) => m.tmdb_id));
+    appStore.setState({ watchlistMovies: watchlistIds });
 
     if (watchlistMovies.length === 0) {
       watchlistContainer.innerHTML = `
@@ -35,16 +40,13 @@ export const renderWatchlistMovies = async (): Promise<void> => {
           vote_average: movie.vote_average || 0,
           overview: movie.overview || "",
           isWatched: false,
+          isWatchlist: true,
         };
         return createMovieCard(tmdbMovie);
       })
       .join("");
 
-    watchlistContainer.innerHTML = `
-      <div class="movies-grid">
-        ${moviesHTML}
-      </div>
-    `;
+    watchlistContainer.innerHTML = moviesHTML;
 
     attachWatchlistListeners();
   } catch (error) {
@@ -72,14 +74,38 @@ export const addWatchlistMovie = async (movie: TMDBMovie): Promise<void> => {
   };
 
   await movieApi.addMovie(movieData);
+  appStore.setState((prev) => {
+    const next = new Set(prev.watchlistMovies);
+    next.add(movie.id);
+    const nextMovies = prev.movies.map((m) =>
+      m.id === movie.id ? { ...m, isWatchlist: true } : m
+    );
+    return { watchlistMovies: next, movies: nextMovies };
+  });
   await renderWatchlistMovies();
 };
 
 /**
  * Tar bort film från watchlist
  */
-export const removeWatchlistMovie = async (movieId: number): Promise<void> => {
-  await movieApi.deleteMovie(movieId);
+export const removeWatchlistMovie = async (tmdbId: number): Promise<void> => {
+  // hitta backend-id
+  const list = await movieApi.getAllMovies("watchlist");
+  const match = list.find((m) => m.tmdb_id === tmdbId);
+  if (match) {
+    await movieApi.deleteMovie(match.id);
+  } else {
+    console.warn("Movie not found in watchlist", { tmdbId });
+  }
+
+  appStore.setState((prev) => {
+    const next = new Set(prev.watchlistMovies);
+    next.delete(tmdbId);
+    const nextMovies = prev.movies.map((m) =>
+      m.id === tmdbId ? { ...m, isWatchlist: false } : m
+    );
+    return { watchlistMovies: next, movies: nextMovies };
+  });
   await renderWatchlistMovies();
 };
 
@@ -88,7 +114,7 @@ export const removeWatchlistMovie = async (movieId: number): Promise<void> => {
  */
 export const attachWatchlistListeners = (): void => {
   const buttons = document.querySelectorAll(
-    "#watchlist-container .movie-card__btn"
+    "#watchlist-container .movie-card__watchlist-btn"
   );
 
   buttons.forEach((button) => {
