@@ -1,0 +1,42 @@
+<div class="filter-view-container">
+    <div class="filter-card">
+        <h2>Sök & Filtrera</h2>
+        
+        <div class="filter-group full-width">
+            <label>Sök på titel</label>
+            <input type="text" id="filter-title-search" placeholder="Skriv in en filmtitel...">
+        </div>
+        
+        <div class="dropdown-row">
+            <div class="filter-group">
+                <label>Utgivningsår</label>
+                <select id="filter-year">
+                    </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Betyg (Rating)</label>
+                <select id="filter-rating">
+                    <option value="">Alla betyg</option>
+                    <option value="8-10">8-10 ⭐</option>
+                    <option value="6-8">6-8 ⭐</option>
+                    <option value="4-6">4-6 ⭐</option>
+                    <option value="under4">Under 4 ⭐</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Genre</label>
+                <select id="filter-genre">
+                    </select>
+            </div>
+        </div>
+
+        <div class="filter-actions">
+            <button id="btn-cancel-filter">Avbryt</button>
+            <button id="btn-execute-filter" disabled>Sök filmer</button>
+        </div>
+    </div>
+
+    <div id="filter-results-list" class="filter-results-grid"></div>
+</div>
