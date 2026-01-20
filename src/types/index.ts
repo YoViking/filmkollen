@@ -1,25 +1,28 @@
-// rating, popularity, poster, release date, title, overview, id, isWatched
-
 export interface TMDBMovie {
-    id: number;
-    title: string;
-    overview: string;
-    poster_path: string | null;
-    release_date: string;
-    vote_average: number;
-    isWatched?: boolean;
-  }
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string | null;
+  release_date: string;
+  vote_average: number;
+  isWatched?: boolean;
+}
 
-  // Interface för app state
+export interface FilterOptions {
+  year?: string;
+  rating?: string; 
+  genre?: string;
+}
+
 export interface AppState {
   movies: TMDBMovie[];
   searchQuery: string;
   isLoading: boolean;
   error: string | null;
   watchedMovies: Set<number>;
+  currentFilters: FilterOptions; // Nytt: håller koll på valda filter
 }
 
-// Types för backend-communication
 export type MovieStatus = 'watchlist' | 'watched';
 
 export interface Movie {
