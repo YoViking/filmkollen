@@ -10,7 +10,7 @@ ratingsRrouter.post("/", (req, res) => {
   const { movieId, rating } = req.body;
 
   // Validation
-  if (!movieId || rating < 1 || rating > 5) {
+  if (!movieId || rating < 1 || rating > 10) {
     return res.status(400).json({ error: "Invalid rating data" });
   }
 
