@@ -128,12 +128,29 @@ filterBtn?.addEventListener('click', async () => {
 });
 
 const renderBrowseView = async () => {
-    root.innerHTML = `<div style="padding: 20px;"><h1>Popular Movies</h1><div id="browse-container" class="filter-results-grid"></div></div>`;
+    // 1. Förbered grundstrukturen
+    root.innerHTML = `
+      <div style="padding: 20px;">
+        <h1>Popular Movies</h1>
+        <div id="browse-container" class="filter-results-grid"></div>
+      </div>
+    `;
+
     try {
+        // 2. Hämta filmerna
         const movies = await getMovies();
         const container = document.getElementById('browse-container');
-        if (container) renderMoviesToContainer(movies, container);
+
+        // 3. Rendera filmerna (detta anropar även dina attachBrowseListeners via renderMoviesToContainer)
+        if (container) {
+            renderMoviesToContainer(movies, container);
+        }
+
+        // 4. FIXEN: Injicera App() (Rating-modalen) i root så den faktiskt existerar i DOM:en
+        root.appendChild(App());
+
     } catch (err) {
+        console.error(err);
         root.innerHTML = `<h2>Kunde inte ladda filmer.</h2>`;
     }
 };
