@@ -1,4 +1,5 @@
 
+console.log("✅ ratings router loaded");
 
 
 import { Router } from "express";
@@ -7,6 +8,7 @@ import getDatabase from "../database.js";
 const ratingsRrouter = Router();
 
 ratingsRrouter.post("/", (req, res) => {
+  console.log("✅ ratings router loaded");
   const { movieId, rating } = req.body;
 
   // Validation

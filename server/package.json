@@ -16,13 +16,10 @@
     "body-parser": "^2.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-<<<<<<< HEAD
-    "express": "^4.18.2"
-=======
     "express": "^4.22.1",
     "sql.js": "^1.13.0",
     "sqlite3": "^5.1.7"
->>>>>>> origin/dev
+
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
