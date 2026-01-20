@@ -1,7 +1,7 @@
 
 
 // Hanterar global state
-import type { TMDBMovie, AppState } from "../types/index";
+import type { AppState } from "../types/index";
 
 type Listener = () => void;
 
@@ -19,9 +19,10 @@ export class Store<T> {
   }
 
   // Uppdatera state och notifiera alla lyssnare
-  setState(newState: Partial<T> | ((prevState: T) => T)): void {
+  setState(newState: Partial<T> | ((prevState: T) => Partial<T>)): void {
     if (typeof newState === "function") {
-      this.state = newState(this.state);
+      const partial = newState(this.state);
+      this.state = { ...this.state, ...partial };
     } else {
       this.state = { ...this.state, ...newState };
     }

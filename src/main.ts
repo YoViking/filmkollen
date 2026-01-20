@@ -9,12 +9,10 @@ import {
   removeWatchlistMovie,
 } from './views/watchlist/watchlist';
 
-import * as movieApi from './services/movieApi';
 import { appStore } from './lib/store';
 import config from './config/config';
-import type { TMDBMovie, CreateMovieBody } from './types/index';
+import type { TMDBMovie } from './types/index';
 
-let currentView: 'browse' | 'watched' | 'watchlist' = 'browse';
 let browseMovies: TMDBMovie[] = [];
 
 const openMovieModal = (movie: TMDBMovie) => {
