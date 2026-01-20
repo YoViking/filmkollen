@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 
 
 export async function saveRating(movieId: number, rating: number) {
@@ -18,7 +16,7 @@ export async function saveRating(movieId: number, rating: number) {
         
         return res.json();
 }
-=======
+
 import type { CreateMovieBody, UpdateMovieBody, Movie, StatsResponse } from "../types/index";
 
 const API_BASE_URL = "http://localhost:3000/api/movies";
@@ -131,4 +129,4 @@ export const getStats = async (): Promise<StatsResponse> => {
     throw error;
   }
 };
->>>>>>> origin/dev
+

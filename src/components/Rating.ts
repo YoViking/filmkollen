@@ -52,6 +52,31 @@ export const modal = () => {
                     <input type="radio" name="rating" value="5">
                     <i class="fa-regular fa-star"></i>
                 </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="6">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="7">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+                
+                <label class="star">
+                    <input type="radio" name="rating" value="8">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="9">
+                    <i class="fa-regular fa-star"></i>
+                </label>
+
+                <label class="star">
+                    <input type="radio" name="rating" value="10">
+                    <i class="fa-regular fa-star"></i>
+                </label>
             
             </div>
 
@@ -81,14 +106,13 @@ export const modal = () => {
 
 
 
-
 let movieId: number
 
 export const showModal = () => {
 
-    const watchedButton = document.querySelectorAll(".movie-card__btn"); 
+    const rateButton = document.querySelectorAll(".movie-card__rate-btn"); 
 
-    watchedButton.forEach(button => {
+    rateButton.forEach(button => {
 
         button.addEventListener("click", () => {
             
@@ -101,9 +125,11 @@ export const showModal = () => {
             const movieTitle = movieCard.querySelector(".movie-card__title");
             const movieReleaseYear = movieCard.querySelector(".movie-card__year");
             const nameYearTitle = document.querySelector(".movie-name-year");
+
             
             if(nameYearTitle) {
-                nameYearTitle.textContent = `🎬 ${movieTitle?.textContent} (${movieReleaseYear?.textContent})`
+                nameYearTitle.textContent = `🎬 ${movieTitle?.textContent} 
+                (${movieReleaseYear?.textContent.split(": ")[1]})`
             }
 
 
