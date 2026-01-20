@@ -15,7 +15,7 @@ export const createMovieCard = (movie: TMDBMovie): string => {
   return `
     <div class="movie-card" data-movie-id="${movie.id}">
       <!-- Watchlist button as overlay -->
-      <button class="movie-card__watchlist-btn ${movie.isWatchlist ? 'is-watchlisted' : ''}" data-movie-id="${movie.id}" title="${movie.isWatchlist ? 'In Watchlist' : 'Add to Watchlist'}">
+      <button type="button" class="movie-card__watchlist-btn ${movie.isWatchlist ? 'is-watchlisted' : ''}" data-movie-id="${movie.id}" title="${movie.isWatchlist ? 'In Watchlist' : 'Add to Watchlist'}" aria-label="${movie.isWatchlist ? 'In Watchlist' : 'Add to Watchlist'}">
         <span class="bookmark-icon">${movie.isWatchlist ? '✓' : '+'}</span>
       </button>
 

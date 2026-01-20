@@ -1,136 +1,147 @@
-<<<<<<< HEAD
+/* merged styles */
+/* Shared view wrapper */
+.view-shell {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-
-
+.view-title {
+  margin: 0 0 16px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+/* Rating Modal Styles */
 
 .star{
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .rating-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    background: linear-gradient(180deg,rgb(33, 50, 76),rgb(15, 28, 49));
-    color: white;
-    padding: 2rem 0;
-    border-radius: 1rem; 
-    max-width: 50rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  background: linear-gradient(180deg,rgb(33, 50, 76),rgb(15, 28, 49));
+  color: white;
+  padding: 2rem 0;
+  border-radius: 1rem; 
+  max-width: 50rem;
 }
 
 .custom-hr{
-    border: 0.5px solid rgba(255, 255, 255, 0.15);
-    width: 100%;
-    margin-bottom: 1.2rem;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  width: 100%;
+  margin-bottom: 1.2rem;
 }
 
 .rating-title-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 3rem;
-    margin-bottom: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 3rem;
+  margin-bottom: 1rem;
 }
 
 .rating-title {
-    font-size: 1.65rem;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-weight: bold;
+  font-size: 1.65rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
 }
 
 .rating-no-button{
-    all: unset;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.15s all ease-in-out;
+  all: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.15s all ease-in-out;
 }
 
 .rating-no-button:hover{
-    color: rgba(243, 243, 243, 0.88);
+  color: rgba(243, 243, 243, 0.88);
 }
 
 .movie-name-year{
-    margin-bottom: 3rem;
-    color: rgba(255, 255, 255, 0.80);
+  margin-bottom: 3rem;
+  color: rgba(255, 255, 255, 0.80);
 }
 
 .stars-div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    color: #fffffff6;
-    transition: 0.15s all ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  color: #fffffff6;
+  transition: 0.15s all ease-in-out;
 }
 
 .stars-div:hover{
-    color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .save-skip-buttons{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .custom-button-hr{
-    border: 0.5px solid rgba(255, 255, 255, 0.15);
-    width: 50%;
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  width: 50%;
 }
 
 .save-rating {
-    padding: 0.8rem;
-    font-size: 18px;
-    font-weight: bold;
-    color: #ffffff;
-    background: #407cd6;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    transition: 0.15s all ease-in-out;
-    outline: none;
-    width: 20rem;
+  padding: 0.8rem;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  background: #407cd6;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: 0.15s all ease-in-out;
+  outline: none;
+  width: 20rem;
 
 }
 
 .save-rating:hover {
-    background: #276cd2;
+  background: #276cd2;
 }
 
 .skip-rating{
-    all: unset;
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.80);
-    cursor: pointer;
-    transition: 0.12s all ease-in-out;
+  all: unset;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.80);
+  cursor: pointer;
+  transition: 0.12s all ease-in-out;
 }
 
 .skip-rating:hover{
-    color: rgba(255, 255, 255, 0.68);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .rating-modal{
-    width: 100%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    background: rgba(0, 0, 0, 0.6);
-    inset: 0;
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
 }
 
 .show-modal{
-    display: flex;
+  display: flex;
 }
 
 input[type="radio"] {
@@ -138,13 +149,14 @@ input[type="radio"] {
 }
 
 .fa-star{
-    font-size: 2.5rem;
+  font-size: 2.5rem;
 }
 
 .fa-solid{
-    color: #f5c518;
+  color: #f5c518;
 }
-=======
+
+/* Movie Card Styles - Based on Figma Design */
 /* Movie Card Styles - Based on Figma Design */
 
 .movie-card {
@@ -316,7 +328,9 @@ input[type="radio"] {
 }
 
 /* Grid layout for browse view */
-#browse-container {
+.view-shell #browse-container,
+.view-shell #watched-container,
+.view-shell #watchlist-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
@@ -440,4 +454,3 @@ input[type="radio"] {
 .movie-modal__watchlist-btn.is-watchlisted:hover {
   background: #ca8a04;
 }
->>>>>>> origin/dev

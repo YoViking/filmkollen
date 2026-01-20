@@ -2,7 +2,6 @@ import './index.css';
 import { getMovies } from './services/tmdbApi';
 import { createMovieCard } from './components/moviecard';
 import App from './App';
-
 import { initWatchedView } from './views/watched/watched';
 import {
   initWatchlistView,
@@ -10,15 +9,13 @@ import {
   removeWatchlistMovie,
 } from './views/watchlist/watchlist';
 
-import * as movieApi from './services/movieApi';
 import { appStore } from './lib/store';
 import config from './config/config';
-import type { TMDBMovie, CreateMovieBody } from './types/index';
+import type { TMDBMovie } from './types/index';
 
-let currentView: 'browse' | 'watched' | 'watchlist' = 'browse';
 let browseMovies: TMDBMovie[] = [];
 
-const openMovieModal = (movie: TMDBMovie) => {
+export const openMovieModal = (movie: TMDBMovie) => {
   const releaseYear = movie.release_date
     ? new Date(movie.release_date).getFullYear()
     : 'N/A';
@@ -115,24 +112,22 @@ const openMovieModal = (movie: TMDBMovie) => {
 };
 
 const attachBrowseListeners = () => {
-  const watchlistButtons = document.querySelectorAll(
-    '#browse-container .movie-card__watchlist-btn'
-  );
-  const detailButtons = document.querySelectorAll(
-    '#browse-container .movie-card__details-btn'
-  );
+  const browseContainer = document.getElementById('browse-container');
+  if (!browseContainer) return;
 
-  watchlistButtons.forEach((button) => {
-    button.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const tmdbId = (button as HTMLButtonElement).dataset.movieId;
+  // Delegated click handling to avoid losing listeners on re-render
+  browseContainer.addEventListener('click', async (event) => {
+    const target = event.target as HTMLElement;
+    const button = target.closest<HTMLElement>('.movie-card__watchlist-btn');
+    const details = target.closest<HTMLElement>('.movie-card__details-btn');
+
+    if (button) {
+      event.preventDefault();
+      const tmdbId = button.dataset.movieId;
       if (!tmdbId) return;
-
       const movie = browseMovies.find((m) => m.id === Number(tmdbId));
       if (!movie) return;
-
-      if ((button as HTMLButtonElement).classList.contains('is-watchlisted'))
-        return;
+      if (button.classList.contains('is-watchlisted')) return;
 
       try {
         await addWatchlistMovie(movie);
@@ -140,22 +135,21 @@ const attachBrowseListeners = () => {
           ...prev,
           watchlistMovies: new Set(prev.watchlistMovies).add(movie.id),
         }));
-        (button as HTMLButtonElement).classList.add('is-watchlisted');
+        button.classList.add('is-watchlisted');
       } catch (err) {
         console.error(err);
       }
-    });
-  });
+      return;
+    }
 
-  detailButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      const tmdbId = (button as HTMLButtonElement).dataset.movieId;
+    if (details) {
+      event.preventDefault();
+      const tmdbId = details.dataset.movieId;
       if (!tmdbId) return;
       const movie = browseMovies.find((m) => m.id === Number(tmdbId));
       if (!movie) return;
       openMovieModal(movie);
-    });
+    }
   });
 };
 
@@ -168,8 +162,8 @@ const renderBrowseView = async () => {
     if (!root) return;
 
     root.innerHTML = `
-      <div style="padding:20px;">
-        <h1>Popular Movies</h1>
+      <div class="view-shell">
+        <h1 class="view-title">Popular Movies</h1>
         <div id="browse-container">
           ${browseMovies.map((m) => createMovieCard(m)).join('')}
         </div>
@@ -185,14 +179,24 @@ const renderBrowseView = async () => {
 const renderWatchedView = async () => {
   const root = document.getElementById('root');
   if (!root) return;
-  root.innerHTML = `<h1>Watched Movies</h1>`;
+  root.innerHTML = `
+    <div class="view-shell">
+      <h1 class="view-title">Watched Movies</h1>
+      <div id="watched-container"></div>
+    </div>
+  `;
   await initWatchedView();
 };
 
 const renderWatchlistView = async () => {
   const root = document.getElementById('root');
   if (!root) return;
-  root.innerHTML = `<h1>Watchlist</h1>`;
+  root.innerHTML = `
+    <div class="view-shell">
+      <h1 class="view-title">Watchlist</h1>
+      <div id="watchlist-container"></div>
+    </div>
+  `;
   await initWatchlistView();
 };
 

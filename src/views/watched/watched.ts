@@ -1,7 +1,8 @@
 import { createMovieCard } from "../../components/moviecard";
 import * as movieApi from "../../services/movieApi";
 import { appStore } from "../../lib/store";
-import type { TMDBMovie, CreateMovieBody } from "../../types/index";
+import { openMovieModal } from "../../main";
+import type { TMDBMovie } from "../../types/index";
 
 /**
  * Renderar listan över watched movies från databasen
@@ -53,6 +54,7 @@ export const renderWatchedMovies = async (): Promise<void> => {
 
     // Re-attach event listeners
     attachWatchedListeners();
+    attachWatchedDetailsListeners();
   } catch (error) {
     console.error("Error rendering watched movies:", error);
     watchedContainer.innerHTML = `
@@ -60,40 +62,6 @@ export const renderWatchedMovies = async (): Promise<void> => {
         <p>Failed to load watched movies: ${error instanceof Error ? error.message : String(error)}</p>
       </div>
     `;
-  }
-};
-
-/**
- * Adderar en film till watched i databasen
- */
-export const addWatchedMovie = async (movie: TMDBMovie): Promise<void> => {
-  try {
-    const movieData: CreateMovieBody = {
-      tmdb_id: movie.id,
-      title: movie.title,
-      poster_path: movie.poster_path,
-      release_date: movie.release_date,
-      vote_average: movie.vote_average,
-      overview: movie.overview,
-      status: "watched",
-      date_watched: new Date().toISOString().split("T")[0], // Format: YYYY-MM-DD
-    };
-
-    const created = await movieApi.addMovie(movieData);
-
-    // Uppdatera globalt state
-    appStore.setState((prev) => {
-      const nextWatched = new Set(prev.watchedMovies);
-      nextWatched.add(movie.id);
-      const nextMovies = prev.movies.map((m) =>
-        m.id === movie.id ? { ...m, isWatched: true } : m
-      );
-      return { watchedMovies: nextWatched, movies: nextMovies };
-    });
-    await renderWatchedMovies();
-  } catch (error) {
-    console.error("Error adding watched movie:", error);
-    alert("Failed to add movie to watched list");
   }
 };
 
@@ -143,6 +111,29 @@ export const attachWatchedListeners = (): void => {
         await removeWatchedMovie(parseInt(movieId));
       }
     });
+  });
+};
+
+/**
+ * Sätter upp event-lyssnare för watched-detaljer
+ */
+const attachWatchedDetailsListeners = (): void => {
+  const watchedContainer = document.getElementById("watched-container");
+  if (!watchedContainer) return;
+
+  watchedContainer.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const button = target.closest<HTMLElement>(".movie-card__details-btn");
+
+    if (button) {
+      event.preventDefault();
+      const tmdbId = button.dataset.movieId;
+      if (!tmdbId) return;
+      const movies = appStore.getState().movies;
+      const movie = movies.find((m) => m.id === Number(tmdbId));
+      if (!movie) return;
+      openMovieModal(movie);
+    }
   });
 };
 
