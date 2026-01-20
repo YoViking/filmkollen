@@ -1,6 +1,7 @@
 import { createMovieCard } from "../../components/moviecard";
 import * as movieApi from "../../services/movieApi";
 import { appStore } from "../../lib/store";
+import { openMovieModal } from "../../main";
 import type { TMDBMovie, CreateMovieBody } from "../../types/index";
 
 /**
@@ -49,6 +50,7 @@ export const renderWatchlistMovies = async (): Promise<void> => {
     watchlistContainer.innerHTML = moviesHTML;
 
     attachWatchlistListeners();
+    attachWatchlistDetailsListeners();
   } catch (error) {
     console.error("Error rendering watchlist movies:", error);
     watchlistContainer.innerHTML = `
@@ -128,8 +130,29 @@ export const attachWatchlistListeners = (): void => {
   });
 };
 
-/**
- * Initierar watchlist-vyn
+/** * Event-lyssnare för watchlist-detaljer
+ */
+const attachWatchlistDetailsListeners = (): void => {
+  const watchlistContainer = document.getElementById("watchlist-container");
+  if (!watchlistContainer) return;
+
+  watchlistContainer.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const button = target.closest<HTMLElement>(".movie-card__details-btn");
+
+    if (button) {
+      event.preventDefault();
+      const tmdbId = button.dataset.movieId;
+      if (!tmdbId) return;
+      const movies = appStore.getState().movies;
+      const movie = movies.find((m) => m.id === Number(tmdbId));
+      if (!movie) return;
+      openMovieModal(movie);
+    }
+  });
+};
+
+/** * Initierar watchlist-vyn
  */
 export const initWatchlistView = async (): Promise<void> => {
   await renderWatchlistMovies();

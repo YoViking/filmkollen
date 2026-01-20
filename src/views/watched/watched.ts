@@ -1,6 +1,7 @@
 import { createMovieCard } from "../../components/moviecard";
 import * as movieApi from "../../services/movieApi";
 import { appStore } from "../../lib/store";
+import { openMovieModal } from "../../main";
 import type { TMDBMovie } from "../../types/index";
 
 /**
@@ -53,6 +54,7 @@ export const renderWatchedMovies = async (): Promise<void> => {
 
     // Re-attach event listeners
     attachWatchedListeners();
+    attachWatchedDetailsListeners();
   } catch (error) {
     console.error("Error rendering watched movies:", error);
     watchedContainer.innerHTML = `
@@ -109,6 +111,29 @@ export const attachWatchedListeners = (): void => {
         await removeWatchedMovie(parseInt(movieId));
       }
     });
+  });
+};
+
+/**
+ * Sätter upp event-lyssnare för watched-detaljer
+ */
+const attachWatchedDetailsListeners = (): void => {
+  const watchedContainer = document.getElementById("watched-container");
+  if (!watchedContainer) return;
+
+  watchedContainer.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const button = target.closest<HTMLElement>(".movie-card__details-btn");
+
+    if (button) {
+      event.preventDefault();
+      const tmdbId = button.dataset.movieId;
+      if (!tmdbId) return;
+      const movies = appStore.getState().movies;
+      const movie = movies.find((m) => m.id === Number(tmdbId));
+      if (!movie) return;
+      openMovieModal(movie);
+    }
   });
 };
 

@@ -1,4 +1,17 @@
 /* merged styles */
+/* Shared view wrapper */
+.view-shell {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.view-title {
+  margin: 0 0 16px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
 /* Rating Modal Styles */
 
 .star{
@@ -315,7 +328,9 @@ input[type="radio"] {
 }
 
 /* Grid layout for browse view */
-#browse-container {
+.view-shell #browse-container,
+.view-shell #watched-container,
+.view-shell #watchlist-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
