@@ -154,7 +154,7 @@ const renderBrowseView = async () => {
 };
 
 const attachBrowseListeners = (currentMovies: TMDBMovie[]) => {
-    const watchedButtons = document.querySelectorAll(".movie-card__btn");
+    const watchedButtons = document.querySelectorAll(".movie-card__rate-btn");
     watchedButtons.forEach((button) => {
         button.addEventListener("click", async (e) => {
             e.stopPropagation(); 
