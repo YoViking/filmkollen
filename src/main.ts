@@ -2,7 +2,6 @@ import './index.css';
 import { getMovies } from './services/tmdbApi';
 import { createMovieCard } from './components/moviecard';
 import App from './App';
-
 import { initWatchedView } from './views/watched/watched';
 import {
   initWatchlistView,

@@ -1,7 +1,7 @@
 import { createMovieCard } from "../../components/moviecard";
 import * as movieApi from "../../services/movieApi";
 import { appStore } from "../../lib/store";
-import type { TMDBMovie, CreateMovieBody } from "../../types/index";
+import type { TMDBMovie } from "../../types/index";
 
 /**
  * Renderar listan över watched movies från databasen
@@ -60,40 +60,6 @@ export const renderWatchedMovies = async (): Promise<void> => {
         <p>Failed to load watched movies: ${error instanceof Error ? error.message : String(error)}</p>
       </div>
     `;
-  }
-};
-
-/**
- * Adderar en film till watched i databasen
- */
-export const addWatchedMovie = async (movie: TMDBMovie): Promise<void> => {
-  try {
-    const movieData: CreateMovieBody = {
-      tmdb_id: movie.id,
-      title: movie.title,
-      poster_path: movie.poster_path,
-      release_date: movie.release_date,
-      vote_average: movie.vote_average,
-      overview: movie.overview,
-      status: "watched",
-      date_watched: new Date().toISOString().split("T")[0], // Format: YYYY-MM-DD
-    };
-
-    const created = await movieApi.addMovie(movieData);
-
-    // Uppdatera globalt state
-    appStore.setState((prev) => {
-      const nextWatched = new Set(prev.watchedMovies);
-      nextWatched.add(movie.id);
-      const nextMovies = prev.movies.map((m) =>
-        m.id === movie.id ? { ...m, isWatched: true } : m
-      );
-      return { watchedMovies: nextWatched, movies: nextMovies };
-    });
-    await renderWatchedMovies();
-  } catch (error) {
-    console.error("Error adding watched movie:", error);
-    alert("Failed to add movie to watched list");
   }
 };
 
