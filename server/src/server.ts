@@ -1,7 +1,13 @@
+
+
+
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import moviesRouter from './routes/movies.js';
+
+import ratingsRouter from './routes/ratings.js';
+
 
 // Läs in miljövariabler från .env
 dotenv.config();
@@ -18,6 +24,8 @@ app.use(cors({
 }));
 app.options('*', cors()); // Handle preflight requests
 app.use(express.json()); // Parsar JSON-body i inkommande requests
+
+
 
 // Routes
 app.use('/api/movies', moviesRouter);
@@ -51,6 +59,29 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+
+app.post('/api/ratings', (req: Request, res: Response) => {
+  const { movieId, rating } = req.body;
+
+  // Very simple validation
+  if (!movieId || !rating) {
+    return res.status(400).json({
+      message: 'movieId and rating are required'
+    });
+  }
+
+  console.log('Rating received:', movieId, rating);
+
+  // For now, just confirm success
+  res.status(201).json({
+    message: 'Rating saved',
+    movieId,
+    rating
+  });
+});
+
+
+
 // 404-hanterare (okänd route)
 app.use((req: Request, res: Response) => {
   res.status(404).json({
@@ -69,6 +100,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     message: err.message
   });
 });
+
+
+app.use("/api/ratings", ratingsRouter);
+
+
 
 // Starta servern
 app.listen(PORT, () => {

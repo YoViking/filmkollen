@@ -1,3 +1,5 @@
+
+
 import type { TMDBMovie } from "../types/index";
 import config from "../config/config";
 
@@ -12,20 +14,40 @@ export const createMovieCard = (movie: TMDBMovie): string => {
 
   return `
     <div class="movie-card" data-movie-id="${movie.id}">
+      <!-- Watchlist button as overlay -->
+      <button type="button" class="movie-card__watchlist-btn ${movie.isWatchlist ? 'is-watchlisted' : ''}" data-movie-id="${movie.id}" title="${movie.isWatchlist ? 'In Watchlist' : 'Add to Watchlist'}" aria-label="${movie.isWatchlist ? 'In Watchlist' : 'Add to Watchlist'}">
+        <span class="bookmark-icon">${movie.isWatchlist ? '✓' : '+'}</span>
+      </button>
+
+      <!-- Poster -->
       <div class="movie-card__poster">
         <img src="${posterUrl}" alt="${movie.title}" loading="lazy" />
       </div>
-      <div class="movie-card__content">
-        <h3 class="movie-card__title">${movie.title}</h3>
-        <div class="movie-card__meta">
-          <span class="movie-card__year">${releaseYear}</span>
-          <span class="movie-card__rating">⭐ ${movie.vote_average.toFixed(1)}</span>
+
+      <!-- Rating section -->
+      <div class="movie-card__rating-section">
+        <div class="movie-card__tmdb-rating">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>${movie.vote_average.toFixed(1)}</span>
         </div>
-        <p class="movie-card__overview">${movie.overview || "No description available."}</p>
-        <button class="movie-card__btn" data-movie-id="${movie.id}" ${movie.isWatched ? "disabled" : ""}>
-          ${movie.isWatched ? "✓ Watched" : "+ Add to Watched"}
+        <button class="movie-card__rate-btn" data-movie-id="${movie.id}" title="Rate this movie">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>Rate</span>
         </button>
       </div>
+
+      <!-- Title and year -->
+      <h3 class="movie-card__title">${movie.title}</h3>
+      <p class="movie-card__year">Release Year: ${releaseYear}</p>
+
+      <!-- Details button -->
+      <button class="movie-card__details-btn" data-movie-id="${movie.id}">
+        Details
+      </button>
     </div>
   `;
 };

@@ -1,3 +1,22 @@
+
+
+export async function saveRating(movieId: number, rating: number) {
+  
+    const res = await fetch("http://localhost:3000/api/ratings", 
+        {
+            
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ movieId, rating })
+        });
+        
+        if (!res.ok) {
+            throw new Error("Failed to save rating");
+        }
+        
+        return res.json();
+}
+
 import type { CreateMovieBody, UpdateMovieBody, Movie, StatsResponse } from "../types/index";
 
 const API_BASE_URL = "http://localhost:3000/api/movies";
@@ -110,3 +129,4 @@ export const getStats = async (): Promise<StatsResponse> => {
     throw error;
   }
 };
+

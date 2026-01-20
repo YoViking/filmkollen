@@ -79,3 +79,4 @@ echo ""
 echo -e "${GREEN}✅ All tests completed!${NC}"
 echo ""
 echo "Note: Install 'jq' for pretty JSON output: brew install jq"
+
