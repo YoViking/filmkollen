@@ -9,10 +9,8 @@ import {
   removeWatchlistMovie,
 } from './views/watchlist/watchlist';
 import { renderFilterComponent } from './views/search/search';
-import { initWatchlistView, addWatchlistMovie, removeWatchlistMovie } from './views/watchlist/watchlist';
 import * as movieApi from './services/movieApi';
 import { appStore } from './lib/store';
-import config from './config/config';
 import config from './config/config';
 import type { TMDBMovie, CreateMovieBody, AppState } from './types/index';
 
