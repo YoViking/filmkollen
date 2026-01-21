@@ -198,7 +198,7 @@ const starRating = () => {
 
 
 
-const collectRating = () => {
+export const collectRating = () => {
 
     const saveRatingButton = document.querySelector(".save-rating") as HTMLButtonElement
 
