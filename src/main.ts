@@ -94,7 +94,12 @@ globalSearchInput?.addEventListener('input', (e) => {
     if (query.length >= 2) {
         searchTimeout = window.setTimeout(async () => {
             const results = await searchMovies(query);
-            root.innerHTML = `<div style="padding: 20px;"><h1>Sökresultat: "${query}"</h1><div id="browse-container" class="filter-results-grid"></div></div>`;
+                        root.innerHTML = `
+                            <div class="view-shell">
+                                <h1>Sökresultat: "${query}"</h1>
+                                <div id="browse-container"></div>
+                            </div>
+                        `;
             const container = document.getElementById('browse-container');
             if (container) renderMoviesToContainer(results, container);
         }, 300);
@@ -127,12 +132,12 @@ filterBtn?.addEventListener('click', async () => {
 
 const renderBrowseView = async () => {
     // 1. Förbered grundstrukturen
-    root.innerHTML = `
-      <div style="padding: 20px;">
-        <h1>Popular Movies</h1>
-        <div id="browse-container" class="filter-results-grid"></div>
-      </div>
-    `;
+        root.innerHTML = `
+            <div class="view-shell">
+                <h1>Popular Movies</h1>
+                <div id="browse-container"></div>
+            </div>
+        `;
 
     try {
         // 2. Hämta filmerna
@@ -213,12 +218,20 @@ const attachBrowseListeners = (currentMovies: TMDBMovie[]) => {
 
 const setupNavigation = () => {
     document.getElementById('nav-browse')?.addEventListener('click', () => renderBrowseView());
-    document.getElementById('nav-watched')?.addEventListener('click', () => {
-        root.innerHTML = `<div style="padding: 20px;"><h1>Watched Movies</h1><div id="watched-container"></div></div>`;
+        document.getElementById('nav-watched')?.addEventListener('click', () => {
+                root.innerHTML = `
+                    <div class="view-shell">
+                        <h1>Watched Movies</h1>
+                        <div id="watched-container"></div>
+                    </div>`;
         initWatchedView();
     });
     document.getElementById('nav-watchlist')?.addEventListener('click', () => {
-        root.innerHTML = `<div style="padding: 20px;"><h1>Watchlist</h1><div id="watchlist-container"></div></div>`;
+                root.innerHTML = `
+                    <div class="view-shell">
+                        <h1>Watchlist</h1>
+                        <div id="watchlist-container"></div>
+                    </div>`;
         initWatchlistView();
     });
 };
