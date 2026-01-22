@@ -63,7 +63,18 @@ const initDatabase = async (): Promise<void> => {
     )
   `;
 
+  const createRatingsTable = `
+    CREATE TABLE IF NOT EXISTS ratings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      movie_id INTEGER NOT NULL,
+      rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 10),
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY(movie_id) REFERENCES movies(id)
+    )
+  `;
+
   db.run(createMoviesTable);
+  db.run(createRatingsTable);
   saveDatabase();
   console.log('✓ Databastabeller initierade');
 };

@@ -59,27 +59,37 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+// Routes
+app.use('/api/movies', moviesRouter);
+app.use("/api/ratings", ratingsRouter);
 
-app.post('/api/ratings', (req: Request, res: Response) => {
-  const { movieId, rating } = req.body;
-
-  // Very simple validation
-  if (!movieId || !rating) {
-    return res.status(400).json({
-      message: 'movieId and rating are required'
-    });
-  }
-
-  console.log('Rating received:', movieId, rating);
-
-  // For now, just confirm success
-  res.status(201).json({
-    message: 'Rating saved',
-    movieId,
-    rating
+// Health check-endpoint
+app.get('/api/health', (req: Request, res: Response) => {
+  res.json({
+    status: 'ok',
+    message: 'Movie API is running',
+    timestamp: new Date().toISOString()
   });
 });
 
+// Root-endpoint
+app.get('/', (req: Request, res: Response) => {
+  res.json({
+    message: 'Movie Watchlist API',
+    version: '1.0.0',
+    endpoints: {
+      health: 'GET /api/health',
+      movies: {
+        getAll: 'GET /api/movies',
+        getOne: 'GET /api/movies/:id',
+        create: 'POST /api/movies',
+        update: 'PUT /api/movies/:id',
+        delete: 'DELETE /api/movies/:id',
+        stats: 'GET /api/movies/user/stats'
+      }
+    }
+  });
+});
 
 
 // 404-hanterare (okänd route)

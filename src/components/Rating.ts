@@ -1,6 +1,8 @@
 
 
-import { saveRating } from "../services/movieApi";
+import { saveRating, getAllMovies } from "../services/movieApi";
+
+ const starIcon = document.querySelectorAll<HTMLElement>(".fa-star");
 
 
 export const modal = () => {
@@ -107,6 +109,7 @@ export const modal = () => {
 
 
 let movieId: number
+let tmdbId: number
 
 export const showModal = () => {
 
@@ -115,12 +118,14 @@ export const showModal = () => {
     rateButton.forEach(button => {
 
         button.addEventListener("click", () => {
+
+            console.log("clicked")
             
             const movieCard = button.closest(".movie-card") as HTMLElement 
 
             if(!movieCard) return
 
-            movieId = Number(movieCard.dataset.movieId)
+            tmdbId = Number(movieCard.dataset.movieId)
             
             const movieTitle = movieCard.querySelector(".movie-card__title");
             const movieReleaseYear = movieCard.querySelector(".movie-card__year");
@@ -204,7 +209,44 @@ export const collectRating = () => {
 
     if (!saveRatingButton) return;
 
-    saveRatingButton.onclick = () => {
-        saveRating(movieId, rating)
+    saveRatingButton.onclick = async () => {
+        try {
+            // Find the database ID from TMDB ID
+            const allMovies = await getAllMovies();
+            const movie = allMovies.find(m => m.tmdb_id === tmdbId);
+            
+            if (!movie) {
+                console.error('Movie not found in database');
+                return;
+            }
+            
+            movieId = movie.id;
+            
+            await saveRating(movieId, rating);
+
+            // Fill the stars in the modal with blue
+            const starIcon = document.querySelectorAll<HTMLElement>(".fa-star");
+            starIcon.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove("fa-regular");
+                    star.classList.add("fa-solid");
+                } else {
+                    star.classList.remove("fa-solid");
+                    star.classList.add("fa-regular");
+                }
+            });
+
+            // Refresh the current view to reflect the movie moved to watched
+            const currentHash = window.location.hash;
+            if (currentHash === '#watchlist') {
+                const { renderWatchlistMovies } = await import('../views/watchlist/watchlist');
+                await renderWatchlistMovies();
+            } else if (currentHash === '#watched') {
+                const { renderWatchedMovies } = await import('../views/watched/watched');
+                await renderWatchedMovies();
+            }
+        } catch (error) {
+            console.error('Error saving rating:', error);
+        }
     }
 }

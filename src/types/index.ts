@@ -11,6 +11,7 @@ export interface TMDBMovie {
     vote_average: number;
     isWatched?: boolean;
     isWatchlist?: boolean;
+    personal_rating?: number;
   }
 
 export interface FilterOptions {

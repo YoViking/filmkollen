@@ -3,12 +3,16 @@ import * as movieApi from "../../services/movieApi";
 import { appStore } from "../../lib/store";
 import { openMovieModal } from "../../main";
 import type { TMDBMovie, CreateMovieBody } from "../../types/index";
+import App from "../../App";
+const root = document.getElementById('root')!;
 
 /**
  * Renderar listan över watchlist-movies från databasen
  */
 export const renderWatchlistMovies = async (): Promise<void> => {
   const watchlistContainer = document.getElementById("watchlist-container");
+
+  console.log(watchlistContainer)
 
   if (!watchlistContainer) {
     console.error("Watchlist container element not found");
@@ -42,6 +46,7 @@ export const renderWatchlistMovies = async (): Promise<void> => {
           overview: movie.overview || "",
           isWatched: false,
           isWatchlist: true,
+          personal_rating: movie.personal_rating || undefined,
         };
         return createMovieCard(tmdbMovie);
       })
@@ -49,8 +54,12 @@ export const renderWatchlistMovies = async (): Promise<void> => {
 
     watchlistContainer.innerHTML = moviesHTML;
 
+    
+
+    root.appendChild(App());
     attachWatchlistListeners();
     attachWatchlistDetailsListeners();
+
   } catch (error) {
     console.error("Error rendering watchlist movies:", error);
     watchlistContainer.innerHTML = `
@@ -65,26 +74,31 @@ export const renderWatchlistMovies = async (): Promise<void> => {
  * Lägger till film i watchlist
  */
 export const addWatchlistMovie = async (movie: TMDBMovie): Promise<void> => {
-  const movieData: CreateMovieBody = {
-    tmdb_id: movie.id,
-    title: movie.title,
-    poster_path: movie.poster_path,
-    release_date: movie.release_date,
-    vote_average: movie.vote_average,
-    overview: movie.overview,
-    status: "watchlist",
-  };
+  try {
+    const movieData: CreateMovieBody = {
+      tmdb_id: movie.id,
+      title: movie.title,
+      poster_path: movie.poster_path,
+      release_date: movie.release_date,
+      vote_average: movie.vote_average,
+      overview: movie.overview,
+      status: "watchlist",
+    };
 
-  await movieApi.addMovie(movieData);
-  appStore.setState((prev) => {
-    const next = new Set(prev.watchlistMovies);
-    next.add(movie.id);
-    const nextMovies = prev.movies.map((m) =>
-      m.id === movie.id ? { ...m, isWatchlist: true } : m
-    );
-    return { watchlistMovies: next, movies: nextMovies };
-  });
-  await renderWatchlistMovies();
+    await movieApi.addMovie(movieData);
+    
+    appStore.setState((prev) => {
+      const next = new Set(prev.watchlistMovies);
+      next.add(movie.id);
+      const nextMovies = prev.movies.map((m) =>
+        m.id === movie.id ? { ...m, isWatchlist: true } : m
+      );
+      return { watchlistMovies: next, movies: nextMovies };
+    });
+  } catch (error) {
+    console.error("Error adding movie to watchlist:", error);
+    alert("Failed to add movie to watchlist");
+  }
 };
 
 /**

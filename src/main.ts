@@ -174,7 +174,7 @@ const attachBrowseListeners = (currentMovies: TMDBMovie[]) => {
             };
 
             try {
-                await movieApi.addMovie(movieData);
+                // await movieApi.addMovie(movieData);
                 appStore.setState((prev) => {
                     const nextWatched = new Set(prev.watchedMovies);
                     nextWatched.add(movie.id);

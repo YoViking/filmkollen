@@ -4,6 +4,9 @@ import { appStore } from "../../lib/store";
 import { openMovieModal } from "../../main";
 import type { TMDBMovie } from "../../types/index";
 
+import App from "../../App";
+const root = document.getElementById('root')!;
+
 /**
  * Renderar listan över watched movies från databasen
  */
@@ -45,6 +48,7 @@ export const renderWatchedMovies = async (): Promise<void> => {
           vote_average: movie.vote_average || 0,
           overview: movie.overview || "",
           isWatched: true,
+          personal_rating: movie.personal_rating || undefined,
         };
         return createMovieCard(tmdbMovie);
       })
@@ -52,6 +56,8 @@ export const renderWatchedMovies = async (): Promise<void> => {
 
     watchedContainer.innerHTML = moviesHTML;
 
+    root.appendChild(App());
+    
     // Re-attach event listeners
     attachWatchedListeners();
     attachWatchedDetailsListeners();

@@ -32,12 +32,21 @@ export const createMovieCard = (movie: TMDBMovie): string => {
           </svg>
           <span>${movie.vote_average.toFixed(1)}</span>
         </div>
+        ${movie.personal_rating ? `
+        <div class="movie-card__personal-rating" data-movie-id="${movie.id}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#60a5fa" stroke="#60a5fa" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>${movie.personal_rating}</span>
+        </div>
+        ` : `
         <button class="movie-card__rate-btn" data-movie-id="${movie.id}" title="Rate this movie">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
           </svg>
           <span>Rate</span>
         </button>
+        `}
       </div>
 
       <!-- Title and year -->
