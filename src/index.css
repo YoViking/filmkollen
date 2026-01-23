@@ -238,6 +238,7 @@
   position: fixed;
   background: rgba(0, 0, 0, 0.6);
   inset: 0;
+  z-index: 9999;
 }
 
 .show-modal{
@@ -422,7 +423,7 @@ input[type="radio"] {
   width: 100%;
   max-width: 400px;
   padding: 12px 24px;
-  background: #f3f4f6;
+  background: #e5e7eb;
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -433,7 +434,7 @@ input[type="radio"] {
 }
 
 .movie-card__details-btn:hover {
-  background: #e5e7eb;
+  background: #d1d5db;
 }
 
 /* Grid layout for browse view */
