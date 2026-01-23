@@ -31,11 +31,17 @@ ratingsRrouter.post("/", (req, res) => {
   try {
     const watchedDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
     
-    // Insert rating
-    db.run(ratingStmt, [movieId, rating, watchedDate]);
+    // Insert rating using sql.js API
+    const ratingInsert = db.prepare(ratingStmt);
+    ratingInsert.bind([movieId, rating, watchedDate]);
+    ratingInsert.step();
+    ratingInsert.free();
     
-    // Update movie status to watched and add personal rating
-    db.run(updateMovieStmt, [rating, watchedDate, movieId]);
+    // Update movie status to watched and add personal rating using sql.js API
+    const movieUpdate = db.prepare(updateMovieStmt);
+    movieUpdate.bind([rating, watchedDate, movieId]);
+    movieUpdate.step();
+    movieUpdate.free();
     
     // CRITICAL: Save database to persist changes
     saveDatabase();

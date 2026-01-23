@@ -54,7 +54,7 @@ const initDatabase = async (): Promise<void> => {
       vote_average REAL,
       overview TEXT,
       status TEXT NOT NULL CHECK(status IN ('watchlist', 'watched')),
-      personal_rating INTEGER CHECK(personal_rating BETWEEN 1 AND 5),
+      personal_rating INTEGER CHECK(personal_rating BETWEEN 1 AND 10),
       review TEXT,
       is_favorite INTEGER DEFAULT 0,
       date_added TEXT DEFAULT (datetime('now')),

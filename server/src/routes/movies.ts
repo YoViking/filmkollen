@@ -124,10 +124,10 @@ router.post('/', (req: Request<unknown, unknown, CreateMovieBody>, res: Response
 
     // Om status är "watched", validera personal_rating
     if (status === 'watched' && personal_rating != null) {
-      if (personal_rating < 1 || personal_rating > 5) {
+      if (personal_rating < 1 || personal_rating > 10) {
         return res.status(400).json({
           error: 'Invalid personal_rating',
-          hint: 'Personal rating must be between 1 and 5'
+          hint: 'Personal rating must be between 1 and 10'
         });
       }
     }
@@ -231,10 +231,10 @@ router.put('/:id', (req: Request<{ id: string }, unknown, UpdateMovieBody>, res:
 
     // Validera personal_rating om den skickas in
     if (personal_rating !== undefined && personal_rating !== null) {
-      if (personal_rating < 1 || personal_rating > 5) {
+      if (personal_rating < 1 || personal_rating > 10) {
         return res.status(400).json({
           error: 'Invalid personal_rating',
-          hint: 'Personal rating must be between 1 and 5'
+          hint: 'Personal rating must be between 1 and 10'
         });
       }
     }
