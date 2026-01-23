@@ -11,18 +11,21 @@
   </head>
   <body>
     
-    <header>
-    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
-      <nav>
-    <button id="nav-browse">Browse</button>
-    <button id="nav-watched">Watched</button>
-    <button id="nav-watchlist">Watchlist</button>
-</nav>
-      
-      <div id="search-section" style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; padding: 2px 8px;">
-        <input type="text" id="movie-search" placeholder="Sök titel..." style="border: none; outline: none; padding: 5px;">
-        <button id="filter-open-btn" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">⏳</button>
+    <header class="navbar">
+      <div class="navbar-left">
+        <span class="navbar-logo">Filmkollen</span>
+        <button id="nav-browse" class="navbar-link">Browse</button>
       </div>
+      
+      <div class="navbar-search">
+        <input type="text" id="movie-search" placeholder="Search movie">
+        <button id="filter-open-btn" class="navbar-filter-btn">filter</button>
+      </div>
+
+      <nav class="navbar-right">
+        <button id="nav-watched" class="navbar-link watched">Watched</button>
+        <button id="nav-watchlist" class="navbar-link watchlist">Watchlist</button>
+      </nav>
     </header>
 
     <div id="root"></div>

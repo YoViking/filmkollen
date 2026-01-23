@@ -1,4 +1,104 @@
 /* merged styles */
+
+/* Navbar Styles - Figma Design */
+.navbar {
+  background-color: #2c2c2c;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  gap: 20px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-logo {
+  background-color: #f39c12;
+  color: #000000;
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.navbar-link {
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-link.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+}
+
+.navbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.navbar-search input {
+  padding: 8px 12px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 0.9rem;
+  flex: 1;
+  outline: none;
+}
+
+.navbar-search input::placeholder {
+  color: #999;
+}
+
+.navbar-filter-btn {
+  background-color: #555555;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-filter-btn:hover {
+  background-color: #666666;
+}
+
+.navbar-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.navbar-link.watched {
+  color: #5dade2;
+}
+
+.navbar-link.watchlist {
+  color: #ffffff;
+}
+
 /* Shared view wrapper */
 .view-shell {
   padding: 20px;
