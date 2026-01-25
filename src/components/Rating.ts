@@ -1,9 +1,4 @@
-
-
 import { saveRating, getAllMovies } from "../services/movieApi";
-
- const starIcon = document.querySelectorAll<HTMLElement>(".fa-star");
-
 
 export const modal = () => {
 
@@ -121,7 +116,7 @@ export const showModal = () => {
 
             console.log("clicked")
             
-            const movieCard = button.closest(".movie-card") as HTMLElement 
+            const movieCard = button.closest(".movie-card") as HTMLElement | null 
 
             if(!movieCard) return
 

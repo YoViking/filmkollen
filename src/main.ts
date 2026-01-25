@@ -9,14 +9,11 @@ import {
   removeWatchlistMovie,
 } from './views/watchlist/watchlist';
 import { renderFilterComponent } from './views/search/search';
-import * as movieApi from './services/movieApi';
 import { appStore } from './lib/store';
 import config from './config/config';
-import type { TMDBMovie, CreateMovieBody, AppState } from './types/index';
+import type { TMDBMovie } from './types/index';
 
 // State variabler
-let browseMovies: TMDBMovie[] = [];
-let currentView: 'browse' | 'watched' | 'watchlist' | 'filter' = 'browse';
 let searchTimeout: number;
 
 const root = document.getElementById('root')!;
@@ -114,7 +111,7 @@ filterBtn?.addEventListener('click', async () => {
             if (params.title && params.title.length >= 2) {
                 results = await searchMovies(params.title);
                 if (params.year) results = results.filter(m => m.release_date?.startsWith(params.year));
-                if (params.genre) results = results.filter(m => (m as any).genre_ids?.includes(Number(params.genre)));
+                if (params.genre) results = results.filter(m => (m as { genre_ids?: number[] }).genre_ids?.includes(Number(params.genre)));
                 if (params.rating) {
                     const [min] = params.rating.split('-').map(Number);
                     results = results.filter(m => m.vote_average >= min);
@@ -167,19 +164,20 @@ const attachBrowseListeners = (currentMovies: TMDBMovie[]) => {
             const movie = currentMovies.find((m) => m.id === Number(tmdbId));
             if (!movie) return;
 
-            const movieData: CreateMovieBody = {
-                tmdb_id: movie.id,
-                title: movie.title,
-                poster_path: movie.poster_path,
-                release_date: movie.release_date,
-                vote_average: movie.vote_average,
-                overview: movie.overview,
-                status: "watched",
-                date_watched: new Date().toISOString().split("T")[0],
-            };
+            // TODO: Implementera backend-anrop
+            // const movieData: CreateMovieBody = {
+            //     tmdb_id: movie.id,
+            //     title: movie.title,
+            //     poster_path: movie.poster_path,
+            //     release_date: movie.release_date,
+            //     vote_average: movie.vote_average,
+            //     overview: movie.overview,
+            //     status: "watched",
+            //     date_watched: new Date().toISOString().split("T")[0],
+            // };
 
-            try {
-                // await movieApi.addMovie(movieData);
+            // try {
+            //     await movieApi.addMovie(movieData);
                 appStore.setState((prev) => {
                     const nextWatched = new Set(prev.watchedMovies);
                     nextWatched.add(movie.id);
@@ -187,7 +185,7 @@ const attachBrowseListeners = (currentMovies: TMDBMovie[]) => {
                 });
                 (button as HTMLButtonElement).textContent = "✓ Watched";
                 (button as HTMLButtonElement).disabled = true;
-            } catch (error) { console.error(error); }
+            // } catch (error) { console.error(error); }
         });
     });
 

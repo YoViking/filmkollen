@@ -32,7 +32,7 @@ const initDatabase = async (): Promise<void> => {
       db = new SQL.Database(buffer);
       console.log('✓ Laddade befintlig databas');
     } catch (error) {
-      console.log('⚠️  Kunde inte ladda databas, skapar ny...');
+      console.log('⚠️  Kunde inte ladda databas, skapar ny...', error);
       db = new SQL.Database();
     }
   } else {

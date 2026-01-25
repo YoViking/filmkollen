@@ -1,5 +1,5 @@
 import { getGenres } from '../../services/tmdbApi';
-// @ts-ignore
+// @ts-ignore - Vite raw import has no type definition
 import searchHtml from './search.html?raw';
 import './search.css';
 
